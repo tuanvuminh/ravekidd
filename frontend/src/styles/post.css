@@ -1,0 +1,75 @@
+@import url('./font.css');
+
+.description {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0.2em;
+}
+
+.postContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: 162.5px;
+  max-width: calc(100% - 450px);
+  margin-bottom: 70px;
+  margin-left: auto;
+  margin-right: auto;
+  color: black;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.soundcloud-player iframe {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 700px;
+  height: 130px;
+  margin-left: 0px;
+
+}
+
+.heart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  user-select: none;
+  margin-left: 30px;
+}
+
+.heartLiked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(255, 0, 0, 0.546);
+  user-select: none;
+  margin-left: 30px;
+}
+
+.profileImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+}
+
+
+
+
+
+
+
+
+

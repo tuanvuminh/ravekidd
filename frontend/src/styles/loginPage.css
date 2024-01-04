@@ -1,0 +1,206 @@
+@import url('./font.css');
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  transition: color 0.3s,
+    transform 0.3s,
+    opacity 0.3s;
+}
+
+body.dark {
+  background-color: black;
+  color: white;
+}
+
+.backgroundImage {
+  background-image: url('../assets/wallpapers/loginWallpaper.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+}
+
+.progressBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 450px;
+  height: 35px;
+  background-color: rgba(255, 255, 255, 0.352);
+  user-select: none;
+}
+
+.progress {
+  height: 100%;
+  position: relative;
+}
+
+.progressPercent {
+  color: rgb(255, 255, 255);
+  font-family: "Helvetica";
+  font-weight: 200;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loadingText {
+  margin-top: 10px;
+  font-family: Helvetica;
+  font-weight: 300;
+  font-size: 30px;
+  letter-spacing: 1em;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.9);
+  padding: 10px;
+  user-select: none;
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.darkModeButton {
+  font-size: 18px;
+  background-color: transparent;
+  color: black;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.darkModeButton.active {
+  color: white;
+}
+
+.dark .darkModeButton {
+  color: white;
+}
+
+.logo {
+  font-family: Arial;
+  font-size: 80px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  margin-bottom: 50px;
+  animation: moveLogo 5s infinite alternate;
+  cursor: default;
+  user-select: none;
+}
+
+@keyframes moveLogo {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(15px);
+  }
+}
+
+.usernameInput,
+.codeInput {
+  text-align: center;
+  padding: 5px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  border: white;
+  color: rgb(0, 0, 0);
+  outline: none;
+  background-color: white;
+  cursor: pointer;
+  transition: color 0.3s,
+    transform 0.3s,
+    opacity 0.3s;
+
+  &.dark {
+    color: white;
+    background-color: black;
+  }
+}
+
+input[type="text"]::placeholder {
+  color: rgb(91, 80, 80);
+  font-weight: 300;
+}
+
+.usernameInput:hover::placeholder,
+.codeInput:hover::placeholder {
+  filter: blur(1px);
+}
+
+.usernameInput:focus-within::placeholder,
+.codeInput:focus-within::placeholder {
+  filter: blur(1px);
+}
+
+.usernameInput.hasText,
+.codeInput.hasText {
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.207);
+}
+
+.enterButton {
+  margin-top: 50px;
+  font-size: 20px;
+  font-weight: 300;
+  text-align: center;
+  width: 150px;
+  height: 50px;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 0;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  &.dark {
+    color: white;
+    background-color: black;
+  }
+}
+
+@keyframes changeFont {
+  0% {
+    font-family: 'Ravekidd', Arial, sans-serif;
+    transform: scale(1);
+    color: black;
+  }
+
+  80% {
+    font-family: 'Ravekidd', Arial, sans-serif;
+    transform: scale(1.1);
+    color: rgb(255, 255, 255);
+  }
+
+  100% {
+    font-family: 'Ravekidd';
+    transform: scale(1);
+    color: rgb(255, 0, 0);
+  }
+}
+
+.animateFont {
+  animation: changeFont 2s forwards;
+}

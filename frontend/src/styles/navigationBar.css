@@ -1,0 +1,170 @@
+@import url('./font.css');
+
+.navigationContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.1);
+  padding-left: 15px;
+  padding-right: 15px;
+  z-index: 100;
+  background-color: white;
+  user-select: none;
+  &.dark {
+      background-color: black;
+      border: 2px solid white;
+    }
+}
+
+.darkModeButton {
+  width: 100px;
+
+    text-decoration: none;
+    font-size: 15px;
+    font-family: Arial;
+    font-weight: lighter;
+    color: black;
+    letter-spacing: 0.5em;
+    &.dark {
+        color: white;
+        background-color: black;
+      }
+}
+
+.darkModeButton:hover {
+  color: rgb(173, 48, 48);
+  opacity: 0.8;
+}
+
+.ambient-nav {
+  width: 250px;
+  text-decoration: none;
+  text-align: center;
+  font-size: 35px;
+  font-family: "Ravekidd";
+  font-weight: lighter;
+  color: black;
+  letter-spacing: 0.5em;  
+  transition: color 0.3s, transform 0.3s, opacity 0.3s;
+  &.dark {
+      color: white;
+      background-color: black;
+    }
+}
+
+.ambient-nav:hover {
+  transform: translateX(10px);
+}
+
+.main-nav {
+  width: 250px;
+  text-decoration: none;
+  text-align: center;
+  justify-content: center;
+  font-size: 35px;
+  font-family: "Ravekidd";
+  font-weight: lighter;
+  color: black;
+  letter-spacing: 0.5em;
+  transition: color 0.3s, transform 0.3s, opacity 0.3s;
+  &.dark {
+    color: white;
+    background-color: black;
+    }
+}
+
+.main-nav:hover {
+  transform: translateX(10px);
+}
+
+.dark-nav {
+  width: 250px;
+  text-decoration: none;
+  text-align: center;
+  font-size: 35px;
+  font-family: "Ravekidd";
+  font-weight: lighter;
+  color: black;
+  letter-spacing: 0.5em;
+  transition: color 0.3s, transform 0.3s, opacity 0.3s;
+  &.dark {
+      color: white;
+      background-color: black;
+    }
+  }
+  
+  .dark-nav:hover {
+    transform: translateX(10px);
+  }
+
+.menu-nav {
+  width: 100px;
+  text-align: right;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: Arial;
+  font-weight: lighter;
+  color: black;
+  letter-spacing: 0.5em;
+  cursor: pointer;
+  &.dark {
+      color: white;
+      background-color: black;
+    }
+}
+
+.menu-nav:hover {
+  color: rgba(255, 0, 0, 0.604);
+    opacity: 1;
+}
+
+.menu-links {
+  position: absolute;
+  top: 80px;
+  width: 200px;
+  height: 680px;
+  right: 0;
+  background-color: rgba(255, 0, 0, 0.604);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-links>* {
+  margin: 20px 0;
+}
+
+.profileButton {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  font-size: 30px;
+  font-family: "Ravekidd";
+}
+
+.profileButton:hover {
+  color: rgb(255, 255, 255);
+    opacity: 0.8;
+}
+
+.logOutButton {
+  font-size: 20px;
+  color: rgb(255, 255, 255);
+}
+
+.logOutButton:hover {
+  color: rgb(255, 255, 255);
+  opacity: 0.8;
+}
+
+
+
+
+
