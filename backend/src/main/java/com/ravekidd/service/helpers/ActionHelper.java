@@ -15,7 +15,7 @@ import static com.ravekidd.consts.Messages.*;
 public class ActionHelper {
 
     /**
-     * Authenticates the user based on the provided authentication object
+     * Authenticates the user based on the provided authentication object.
      *
      * @param authentication The authentication object
      * @throws SecurityException if the user is not authenticated

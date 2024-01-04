@@ -25,6 +25,6 @@ public interface Constants {
     String ROLE_USER = "USER";
     String ROLE_ADMIN = "ADMIN";
 
-    // Bundle
+    // Bundle files
     String BUNDLE_MESSAGES = "messages";
 }
