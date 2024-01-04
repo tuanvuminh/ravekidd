@@ -1,0 +1,10 @@
+1. Update methods, like comments
+2. Validations, exceptions, filters, sorting
+3. Design Patterns
+4. Https
+5. Generics
+6. Nested classes
+7. Functional programming
+8. JUnit
+9. SQL scripts
+10. API Gateway

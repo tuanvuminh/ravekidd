@@ -1,0 +1,5 @@
+type PostComment {
+    commentId: ID!
+    user: User!
+    content: String!
+}

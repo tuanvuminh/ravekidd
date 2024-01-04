@@ -1,0 +1,26 @@
+type Query {
+    getUsers: [User]!
+    getUserById(id: ID): User
+
+    findPosts(query: String, parameter: String): [Post]!
+    findPostById(id: ID): Post
+}
+
+type Mutation {
+    deleteUser(id: ID!): User
+
+    changeImage(newImage: String! ):User
+    changeUsername(newUsername: String!): AuthResponse
+
+    createPost(description: String!, link: String!): Post
+    deletePost(postId: ID!): Post
+
+    likePost(postId: ID!): Post
+    unlikePost(postId: ID!): Post
+
+    addComment(postId: ID!, content: String!): Post
+    deleteComment(postId: ID!, commentId: ID!): Post
+}
+
+
+

@@ -1,0 +1,10 @@
+type PostComment {
+    id: ID
+    user: User
+    content: String
+}
+
+input PostCommentInput {
+    id: ID
+    content: String
+}
