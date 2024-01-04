@@ -69,15 +69,15 @@ public class UserService implements IUserService {
 
         switch (query) {
             case QUERY_USER_ID -> {
-                LOG.debug("Finding user by id {}", parameter);
+                LOG.debug("Finding user by id {}...", parameter);
                 users = userRepository.findUserById(Long.parseLong(parameter));
             }
             case QUERY_USER_USERNAME -> {
-                LOG.debug("Finding user by username {}", parameter);
+                LOG.debug("Finding user by username {}...", parameter);
                 users = userRepository.findUserByUsername(parameter);
             }
             default -> {
-                LOG.debug("Retrieving all users.");
+                LOG.debug("Retrieving all users...");
                 users = userRepository.findAll();
             }
         }
