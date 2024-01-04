@@ -159,7 +159,7 @@ public class InputHelper {
     /**
      * Patches a Post object with values from another Post object, ignoring null values.
      *
-     * @param postToUpdate The Post object to update
+     * @param postToUpdate  The Post object to update
      * @param input         The Post object containing values to patch
      */
     public void patchPost(Post postToUpdate, Post input) {
