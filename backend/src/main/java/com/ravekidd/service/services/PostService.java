@@ -69,19 +69,19 @@ public class PostService implements IPostService {
 
         switch (query) {
             case QUERY_POST_ID -> {
-                LOG.debug("Finding post by id {}", parameter);
+                LOG.debug("Finding post by id {}...", parameter);
                 posts = postRepository.findById(Long.parseLong(parameter));
             }
             case QUERY_POST_USER -> {
-                LOG.debug("Finding post by userId {}", parameter);
+                LOG.debug("Finding post by userId {}...", parameter);
                 posts = postRepository.findByUserId(Long.parseLong(parameter));
             }
             case QUERY_POST_DATE -> {
-                LOG.debug("Finding post by date {}", parameter);
+                LOG.debug("Finding post by date {}...", parameter);
                 posts = postRepository.findByDate(inputHelper.transformStringToDateTime(parameter));
             }
             default -> {
-                LOG.debug("Retrieving all posts.");
+                LOG.debug("Retrieving all posts...");
                 posts = postRepository.findAll();
             }
         }
