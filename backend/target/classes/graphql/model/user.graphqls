@@ -1,7 +1,0 @@
-type User {
-    id: ID!
-    username: String!
-    image: String!
-    password: String!
-    posts: [Post!]!
-}

@@ -1,4 +1,0 @@
-type AuthResponse {
-    accessToken: String!
-    tokenType: String!
-}
