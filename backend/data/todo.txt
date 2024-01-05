@@ -1,4 +1,4 @@
-1. Update methods, like comments
+1. Update methods----------------------DONE
 2. Validations, exceptions, filters, sorting
 3. Design Patterns
 4. Https
@@ -6,5 +6,6 @@
 6. Nested classes
 7. Functional programming
 8. JUnit
-9. SQL scripts
+9. SQL scripts----------------------DONE
 10. API Gateway
+11. Like comments

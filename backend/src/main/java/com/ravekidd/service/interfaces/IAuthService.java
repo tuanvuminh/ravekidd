@@ -14,24 +14,24 @@ public interface IAuthService {
     /**
      * Registers a user with the given register request.
      *
-     * @param registerRequest Register request containing user information
-     * @return ResponseEntity containing the registration result
+     * @param registerRequest Register request containing user information.
+     * @return ResponseEntity containing the registration result.
      */
     ResponseEntity<String> register(RegisterRequest registerRequest);
 
     /**
      * Logs in the user with the provided login request.
      *
-     * @param loginRequest Login request containing the user's credentials
-     * @return Authentication response containing a bearer token
+     * @param loginRequest Login request containing the user's credentials.
+     * @return Authentication response containing a bearer token.
      */
     ResponseEntity<AuthResponse> login(LoginRequest loginRequest);
 
     /**
      * Validates a token.
      *
-     * @param request HttpServletRequest object containing the token to be validated
-     * @return ResponseEntity containing the result of the token validation
+     * @param request HttpServletRequest object containing the token to be validated.
+     * @return ResponseEntity containing the result of the token validation.
      */
-    ResponseEntity<String> validateToken(HttpServletRequest request);
+    ResponseEntity<AuthResponse> validateToken(HttpServletRequest request);
 }

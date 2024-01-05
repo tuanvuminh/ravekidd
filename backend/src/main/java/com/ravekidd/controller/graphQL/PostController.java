@@ -42,14 +42,14 @@ public class PostController {
      * @return List of posts matching the criteria.
      */
     @QueryMapping
-    public List<Post> findPosts(@Argument String query, @Argument String parameter, Authentication authentication) {
+    public List<Post> getPosts(@Argument String query, @Argument String parameter, Authentication authentication) {
         return service.getPosts(query, parameter, authentication);
     }
 
     /**
      * GraphQL Mutation mapping. Creates a new post.
      *
-     * @param post             The content of the new post.
+     * @param post             The new incoming instance of the Post object.
      * @param authentication   Authentication object representing the current user.
      * @return The newly created post.
      */
@@ -61,7 +61,7 @@ public class PostController {
     /**
      * GraphQL Mutation mapping. Updates an existing post.
      *
-     * @param post             The updated content of the post.
+     * @param post             The updated instance of the Post object.
      * @param authentication   Authentication object representing the current user.
      * @return The post with the updated content.
      */
@@ -109,35 +109,36 @@ public class PostController {
     /**
      * GraphQL Mutation mapping. Adds a comment to a post.
      *
-     * @param comment          The new incoming instance of the comment object.
+     * @param comment          The new incoming instance of the PostComment object.
      * @param authentication   Authentication object representing the current user.
      * @return The post with the added comment.
      */
     @MutationMapping
-    public Post addComment(@Argument PostComment comment, Authentication authentication) {
-        return service.addComment(comment, authentication);
+    public Post addComment(@Argument Long postId, @Argument PostComment comment, Authentication authentication) {
+        return service.addComment(postId, comment, authentication);
     }
 
     /**
      * GraphQL Mutation mapping. Updates a comment on a post.
      *
-     * @param comment          The updated instance of the comment object.
+     * @param comment          The updated instance of the PostComment object.
      * @param authentication   Authentication object representing the current user.
      * @return The post with the updated comment.
      */
-    public Post updateComment(@Argument PostComment comment, Authentication authentication) {
-        return service.updateComment(comment, authentication);
+    @MutationMapping
+    public Post updateComment(@Argument Long postId, @Argument PostComment comment, Authentication authentication) {
+        return service.updateComment(postId, comment, authentication);
     }
 
     /**
      * GraphQL Mutation mapping. Deletes a comment from a post.
      *
-     * @param comment          The comment object to be deleted.
+     * @param comment          The PostComment object to be deleted.
      * @param authentication   Authentication object representing the current user.
      * @return The post with the deleted comment.
      */
     @MutationMapping
-    public Post deleteComment(@Argument PostComment comment, Authentication authentication) {
-        return service.deleteComment(comment, authentication);
+    public Post deleteComment(@Argument Long postId, @Argument PostComment comment, Authentication authentication) {
+        return service.deleteComment(postId, comment, authentication);
     }
 }

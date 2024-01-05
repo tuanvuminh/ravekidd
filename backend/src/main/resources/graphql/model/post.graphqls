@@ -12,5 +12,4 @@ input PostInput {
     id: ID
     description: String
     link: String
-    date: String
 }

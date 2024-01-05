@@ -2,6 +2,7 @@ type PostComment {
     id: ID
     user: User
     content: String
+    post: Post
 }
 
 input PostCommentInput {

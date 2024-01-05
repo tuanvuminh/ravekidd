@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,22 +71,25 @@ public class PostService implements IPostService {
         switch (query) {
             case QUERY_POST_ID -> {
                 LOG.debug("Finding post by id {}...", parameter);
-                posts = postRepository.findById(Long.parseLong(parameter));
+                long postId = Long.parseLong(parameter);
+                posts = postRepository.findById(postId);
             }
             case QUERY_POST_USER -> {
                 LOG.debug("Finding post by userId {}...", parameter);
-                posts = postRepository.findByUserId(Long.parseLong(parameter));
+                long userId = Long.parseLong(parameter);
+                posts = postRepository.findByUserId(userId);
             }
             case QUERY_POST_DATE -> {
                 LOG.debug("Finding post by date {}...", parameter);
-                posts = postRepository.findByDate(inputHelper.transformStringToDateTime(parameter));
+                LocalDateTime dateTime = inputHelper.transformStringToDateTime(parameter);
+                posts = postRepository.findByDate(dateTime);
             }
             default -> {
                 LOG.debug("Retrieving all posts...");
                 posts = postRepository.findAll();
             }
         }
-        LOG.debug("Posts retrieved successfully. {}", posts);
+        LOG.debug("Posts retrieved successfully: {}", posts);
         return posts;
     }
 
@@ -221,7 +225,7 @@ public class PostService implements IPostService {
      * @inheritDoc
      */
     @Override
-    public Post addComment(PostComment inputComment, Authentication authentication) {
+    public Post addComment(Long postId, PostComment inputComment, Authentication authentication) {
 
         LOG.debug("Received a addComment request.");
         inputHelper.initInputPostComment(inputComment);
@@ -229,7 +233,7 @@ public class PostService implements IPostService {
 
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
-        Optional<Post> optionalPost = postRepository.findById(inputComment.getPost().getId());
+        Optional<Post> optionalPost = postRepository.findById(postId);
 
         if (optionalPost.isPresent()) {
 
@@ -245,7 +249,7 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public Post updateComment(PostComment inputComment, Authentication authentication) {
+    public Post updateComment(Long postId, PostComment inputComment, Authentication authentication) {
 
         LOG.debug("Received a updateComment request.");
         inputHelper.initInputPostComment(inputComment);
@@ -253,7 +257,7 @@ public class PostService implements IPostService {
 
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
-        Optional<Post> optionalPost = postRepository.findById(inputComment.getPost().getId());
+        Optional<Post> optionalPost = postRepository.findById(postId);
 
         if (optionalPost.isPresent()) {
 
@@ -278,7 +282,7 @@ public class PostService implements IPostService {
      * @inheritDoc
      */
     @Override
-    public Post deleteComment(PostComment inputComment, Authentication authentication) {
+    public Post deleteComment(Long postId, PostComment inputComment, Authentication authentication) {
 
         LOG.debug("Received a deleteComment request.");
         inputHelper.initInputPostComment(inputComment);
@@ -286,7 +290,7 @@ public class PostService implements IPostService {
 
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
-        Optional<Post> optionalPost = postRepository.findById(inputComment.getPost().getId());
+        Optional<Post> optionalPost = postRepository.findById(postId);
 
         if (optionalPost.isPresent()) {
 

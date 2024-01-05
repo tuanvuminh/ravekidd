@@ -17,8 +17,8 @@ public class ActionHelper {
     /**
      * Authenticates the user based on the provided authentication object.
      *
-     * @param authentication The authentication object
-     * @throws SecurityException if the user is not authenticated
+     * @param authentication The authentication object.
+     * @throws SecurityException if the user is not authenticated.
      */
     public void authenticate(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -29,10 +29,10 @@ public class ActionHelper {
     /**
      * Finds a user by their username.
      *
-     * @param username       The username of the user to find
-     * @param userRepository The repository for user entities
-     * @return The found user
-     * @throws EntityNotFoundException if the user is not found
+     * @param username       The username of the user to find.
+     * @param userRepository The repository for user entities.
+     * @return The founded user.
+     * @throws EntityNotFoundException if the user is not found.
      */
     public User findUserByUsername(String username, UserRepository userRepository) {
         return userRepository.findByUsername(username)
@@ -42,10 +42,10 @@ public class ActionHelper {
     /**
      * Finds a user by their ID.
      *
-     * @param id             The ID of the user to find
-     * @param userRepository The repository for user entities
-     * @return The found user
-     * @throws EntityNotFoundException if the user is not found
+     * @param id             The ID of the user to find.
+     * @param userRepository The repository for user entities.
+     * @return The founded user.
+     * @throws EntityNotFoundException if the user is not found.
      */
     public User findUserById(Long id, UserRepository userRepository) {
         return userRepository.findById(id)

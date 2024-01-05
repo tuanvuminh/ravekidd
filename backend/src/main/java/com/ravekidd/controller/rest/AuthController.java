@@ -61,7 +61,7 @@ public class AuthController {
      * @return JSON response indicating the validation status.
      */
     @PostMapping("/validate")
-    public ResponseEntity<String> validateToken(HttpServletRequest request) {
+    public ResponseEntity<AuthResponse> validateToken(HttpServletRequest request) {
         return service.validateToken(request);
     }
 }

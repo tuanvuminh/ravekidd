@@ -21,9 +21,9 @@ public class InputHelper {
     /**
      * Initializes the input parameters, setting them to empty strings if they are null.
      *
-     * @param query     The query string
-     * @param parameter The parameter string
-     * @return An array containing the initialized query and parameter
+     * @param query     The query string.
+     * @param parameter The parameter string.
+     * @return An array containing the initialized query and parameter.
      */
     public String[] initInputQuery(String query, String parameter) {
 
@@ -41,7 +41,7 @@ public class InputHelper {
     /**
      * Initializes the properties of a User object, setting them to default values if they are null.
      *
-     * @param input The User object to initialize
+     * @param input The User object to initialize.
      */
     public void initInputUser(User input) {
 
@@ -73,7 +73,7 @@ public class InputHelper {
     /**
      * Initializes the properties of a Post object, setting them to default values if they are null.
      *
-     * @param input The Post object to initialize
+     * @param input The Post object to initialize.
      */
     public void initInputPost(Post input) {
 
@@ -111,7 +111,7 @@ public class InputHelper {
     /**
      * Initializes the properties of a PostComment object, setting them to default values if they are null.
      *
-     * @param input The PostComment object to initialize
+     * @param input The PostComment object to initialize.
      */
     public void initInputPostComment(PostComment input) {
 
@@ -143,7 +143,7 @@ public class InputHelper {
     /**
      * Initializes the properties of a Role object, setting them to default values if they are null.
      *
-     * @param input The Role object to initialize
+     * @param input The Role object to initialize.
      */
     public void initInputRoles(Role input) {
 
@@ -159,8 +159,8 @@ public class InputHelper {
     /**
      * Patches a Post object with values from another Post object, ignoring null values.
      *
-     * @param postToUpdate  The Post object to update
-     * @param input         The Post object containing values to patch
+     * @param postToUpdate  The Post object to update.
+     * @param input         The Post object containing values to patch.
      */
     public void patchPost(Post postToUpdate, Post input) {
 
@@ -176,8 +176,8 @@ public class InputHelper {
     /**
      * Transforms a string in the format "dd.MM.yyyy" to a LocalDateTime object.
      *
-     * @param dateString The string representation of a date in "dd.MM.yyyy" format
-     * @return A LocalDateTime object representing the input date
+     * @param dateString The string representation of a date in "dd.MM.yyyy" format.
+     * @return A LocalDateTime object representing the input date.
      */
     public LocalDateTime transformStringToDateTime(String dateString) {
 

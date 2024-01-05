@@ -6,20 +6,23 @@ import java.util.ResourceBundle;
 public enum Messages {
 
     // Successful messages
-    SUCCESSFUL_REGISTER,
-    SUCCESSFUL_LOGIN,
-    SUCCESSFUL_TOKEN_VALIDATION,
-    SUCCESSFUL_USERNAME_CHANGE,
+    SUCCESSFUL_REGISTER("User is successfully registered."),
+    SUCCESSFUL_LOGIN("Login was successful."),
+    SUCCESSFUL_TOKEN_VALIDATION("Token is valid."),
+    SUCCESSFUL_USERNAME_CHANGE("Username was successfully changed."),
 
     // Unsuccessful messages
-    UNSUCCESSFUL_REGISTER,
-    UNSUCCESSFUL_LOGIN,
-    UNSUCCESSFUL_TOKEN_VALIDATION,
-    UNSUCCESSFUL_FIND_USER_BY_ID,
-    UNSUCCESSFUL_FIND_USER_BY_USERNAME,
-    UNSUCCESSFUL_AUTHENTICATION;
+    UNSUCCESSFUL_REGISTER("Username is already taken."),
+    UNSUCCESSFUL_LOGIN("Login has failed."),
+    UNSUCCESSFUL_TOKEN_VALIDATION("Token is invalid or expired."),
+    UNSUCCESSFUL_FIND_USER_BY_ID("User with ID %d was not found."),
+    UNSUCCESSFUL_FIND_USER_BY_USERNAME("User %s was not found."),
+    UNSUCCESSFUL_AUTHENTICATION("User was not authenticated.");
 
-    final ResourceBundle bundle = ResourceBundle.getBundle(Constants.BUNDLE_MESSAGES, Locale.ENGLISH);
+    private static final ResourceBundle bundle = ResourceBundle.getBundle(Constants.BUNDLE_MESSAGES, Locale.ENGLISH);
+
+    Messages(String description) {
+    }
 
     /**
      * Retrieves the message associated with the enum from the resource bundle.

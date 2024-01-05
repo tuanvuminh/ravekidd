@@ -40,9 +40,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     /**
      * Loads a user by their username.
      *
-     * @param  username  The username of the user to load
-     * @return           UserDetails object representing the loaded user
-     * @throws UsernameNotFoundException if the user is not found
+     * @param  username  The username of the user to load.
+     * @return           UserDetails object representing the loaded user.
+     * @throws UsernameNotFoundException if the user is not found.
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -54,8 +54,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     /**
      * Maps a list of Role objects to a list of GrantedAuthority objects.
      *
-     * @param  roles  The list of Role objects to be mapped
-     * @return        The list of GrantedAuthority objects mapped from the Role objects
+     * @param  roles  The list of Role objects to be mapped.
+     * @return        The list of GrantedAuthority objects mapped from the Role objects.
      */
     private Collection<GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
