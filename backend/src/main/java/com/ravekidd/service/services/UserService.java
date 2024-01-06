@@ -16,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.ravekidd.consts.Constants.*;
@@ -70,12 +69,14 @@ public class UserService implements IUserService {
         List<User> users;
 
         switch (query) {
+
             case QUERY_USER_ID -> {
                 LOG.debug("Finding user by id {}...", parameter);
                 users = userRepository.findUserById(Long.parseLong(parameter));
 
                 if (users.isEmpty()) {
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(Long.parseLong(parameter)));
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(
+                            Long.parseLong(parameter)));
                 }
                 return users;
             }
@@ -84,7 +85,8 @@ public class UserService implements IUserService {
                 users = userRepository.findUserByUsername(parameter);
 
                 if (users.isEmpty()) {
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(parameter));
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(
+                            parameter));
                 }
                 return users;
             }
