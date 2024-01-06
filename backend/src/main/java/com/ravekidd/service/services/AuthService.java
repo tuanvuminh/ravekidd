@@ -91,8 +91,8 @@ public class AuthService implements IAuthService {
         } else {
             user.setRoles(Collections.singletonList(roleRepository.findByName(Constants.ROLE_USER).get()));
         }
-
         userRepository.save(user);
+
         response.setMessage(SUCCESSFUL_REGISTER.get());
         response.setRegisteredUser(user);
 
