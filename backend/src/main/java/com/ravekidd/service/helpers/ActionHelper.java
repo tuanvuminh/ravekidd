@@ -74,11 +74,11 @@ public class ActionHelper {
     }
 
     /**
-     * Retrieves an optional post by its ID.
+     * Retrieves a post by its ID.
      *
      * @param postId         The ID of the post to retrieve.
      * @param postRepository The repository for post entities.
-     * @return An optional containing the found post, or an empty optional if the post is not found.
+     * @return The found post.
      * @throws EntityNotFoundException if the post is not found.
      */
     public Post findPost(Long postId, PostRepository postRepository) {
