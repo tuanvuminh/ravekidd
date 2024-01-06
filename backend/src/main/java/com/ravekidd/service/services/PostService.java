@@ -77,8 +77,8 @@ public class PostService implements IPostService {
                 posts = postRepository.findById(Long.parseLong(parameter));
 
                 if (posts.isEmpty()) {
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(
-                            Long.parseLong(parameter)));
+                    LOG.debug(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(Long.parseLong(parameter)));
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(Long.parseLong(parameter)));
                 }
                 return posts;
             }
@@ -87,8 +87,8 @@ public class PostService implements IPostService {
                 posts = postRepository.findByUserId(Long.parseLong(parameter));
 
                 if (posts.isEmpty()) {
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_USER_ID.get().formatted(
-                            Long.parseLong(parameter)));
+                    LOG.debug(UNSUCCESSFUL_FIND_POST_BY_USER_ID.get().formatted(Long.parseLong(parameter)));
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_USER_ID.get().formatted(Long.parseLong(parameter)));
                 }
                 return posts;
             }
@@ -102,8 +102,8 @@ public class PostService implements IPostService {
                 posts = postRepository.findByDateBetween(dateFrom, dateTo);
 
                 if (posts.isEmpty()) {
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BETWEEN_DATES.get().formatted(
-                            dateFrom.toString(), dateTo.toString()));
+                    LOG.debug(UNSUCCESSFUL_FIND_POST_BETWEEN_DATES.get().formatted(dateFrom.toString(), dateTo.toString()));
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BETWEEN_DATES.get().formatted(dateFrom.toString(), dateTo.toString()));
                 }
                 return posts;
             }
@@ -112,6 +112,7 @@ public class PostService implements IPostService {
                 posts = postRepository.findAll();
 
                 if (posts.isEmpty()) {
+                    LOG.debug(UNSUCCESSFUL_FIND_POSTS.get().formatted(parameter));
                     throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POSTS.get().formatted(parameter));
                 }
                 return posts;
@@ -145,9 +146,7 @@ public class PostService implements IPostService {
         LOG.debug("Received an updatePost request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = Optional.ofNullable(postRepository.findById(updatedPost.getId())
-                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(updatedPost.getId())))
-        );
+        Optional<Post> optionalPost = actionHelper.findPost(updatedPost.getId(), postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
@@ -169,9 +168,7 @@ public class PostService implements IPostService {
         LOG.debug("Received a deletePost request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = Optional.ofNullable(postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
-        );
+        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
@@ -193,9 +190,7 @@ public class PostService implements IPostService {
         LOG.debug("Received a likePost request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = Optional.ofNullable(postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
-        );
+        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
@@ -217,9 +212,7 @@ public class PostService implements IPostService {
         LOG.debug("Received an unlikePost request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = Optional.ofNullable(postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
-        );
+        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
@@ -242,9 +235,7 @@ public class PostService implements IPostService {
         inputHelper.initInputPostComment(inputComment);
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = Optional.ofNullable(postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
-        );
+        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
@@ -262,9 +253,7 @@ public class PostService implements IPostService {
         inputHelper.initInputPostComment(inputComment);
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = Optional.ofNullable(postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
-        );
+        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
@@ -290,9 +279,7 @@ public class PostService implements IPostService {
         LOG.debug("Received a deleteComment request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = Optional.ofNullable(postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
-        );
+        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
@@ -318,9 +305,7 @@ public class PostService implements IPostService {
         LOG.debug("Received a likeComment request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = Optional.ofNullable(postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
-        );
+        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
@@ -346,9 +331,7 @@ public class PostService implements IPostService {
         LOG.debug("Received an unlikeComment request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = Optional.ofNullable(postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
-        );
+        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 

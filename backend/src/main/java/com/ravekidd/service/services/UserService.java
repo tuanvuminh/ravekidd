@@ -75,8 +75,8 @@ public class UserService implements IUserService {
                 users = userRepository.findUserById(Long.parseLong(parameter));
 
                 if (users.isEmpty()) {
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(
-                            Long.parseLong(parameter)));
+                    LOG.debug(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(Long.parseLong(parameter)));
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(Long.parseLong(parameter)));
                 }
                 return users;
             }
@@ -85,8 +85,8 @@ public class UserService implements IUserService {
                 users = userRepository.findUserByUsername(parameter);
 
                 if (users.isEmpty()) {
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(
-                            parameter));
+                    LOG.debug(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(parameter));
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(parameter));
                 }
                 return users;
             }
@@ -95,6 +95,7 @@ public class UserService implements IUserService {
                 users = userRepository.findAll();
 
                 if (users.isEmpty()) {
+                    LOG.debug(UNSUCCESSFUL_FIND_USERS.get());
                     throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USERS.get());
                 }
                 return users;
@@ -144,8 +145,8 @@ public class UserService implements IUserService {
             return response;
 
         } catch (Exception e) {
-            LOG.debug("Failed to change username for user: {}", authentication.getName(), e);
-            throw new RuntimeException("Failed to change username.");
+            LOG.debug("Failed to change username for user: {} ", authentication.getName(), e);
+            throw new RuntimeException("Failed to change username. ", e);
         }
     }
 

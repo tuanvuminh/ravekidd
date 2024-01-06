@@ -125,7 +125,7 @@ public class AuthService implements IAuthService {
 
         } catch (AuthenticationException e) {
 
-            LOG.debug("Failed login attempt for username: {}", authRequest.username(), e);
+            LOG.debug("Failed login attempt for username: {}", authRequest.username());
             response.setMessage(UNSUCCESSFUL_LOGIN.get());
             response.setAccessToken(null);
 
