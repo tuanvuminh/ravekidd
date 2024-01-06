@@ -142,7 +142,7 @@ public class UserService implements IUserService {
             return response;
 
         } catch (Exception e) {
-            LOG.error("Failed to change username for user: {}", authentication.getName(), e);
+            LOG.debug("Failed to change username for user: {}", authentication.getName(), e);
             throw new RuntimeException("Failed to change username.");
         }
     }

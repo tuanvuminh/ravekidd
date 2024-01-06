@@ -152,20 +152,14 @@ public class PostService implements IPostService {
         );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
+        Post post = optionalPost.get();
 
-        if (optionalPost.isPresent()) {
-
-            Post post = optionalPost.get();
-
-            if (post.getUser().getId().equals(user.getId())) {
-
-                inputHelper.patchPost(post, updatedPost);
-
-                LOG.debug("Post was successfully updated by '{}'.", username);
-                return postRepository.save(post);
-            }
+        if (post.getUser().getId().equals(user.getId())) {
+            inputHelper.patchPost(post, updatedPost);
+            LOG.debug("Post was successfully updated by '{}'.", username);
+            return postRepository.save(post);
         }
-        LOG.error("Post could not be updated.");
+        LOG.debug("Post could not be updated.");
         return null;
     }
 
@@ -185,18 +179,14 @@ public class PostService implements IPostService {
         );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
+        Post post = optionalPost.get();
 
-        if (optionalPost.isPresent()) {
-
-            Post post = optionalPost.get();
-
-            if (post.getUser().getId().equals(user.getId())) {
-                postRepository.delete(post);
-                LOG.debug("Post was deleted.");
-                return post;
-            }
+        if (post.getUser().getId().equals(user.getId())) {
+            postRepository.delete(post);
+            LOG.debug("Post was deleted.");
+            return post;
         }
-        LOG.error("Post could not be deleted.");
+        LOG.debug("Post could not be deleted.");
         return null;
     }
 
@@ -216,18 +206,14 @@ public class PostService implements IPostService {
         );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
+        Post post = optionalPost.get();
 
-        if (optionalPost.isPresent()) {
-
-            Post post = optionalPost.get();
-
-            if (!post.getLikes().contains(user)) {
-                post.addLike(user);
-                LOG.debug("Post was liked by '{}'.", username);
-                return postRepository.save(post);
-            }
+        if (!post.getLikes().contains(user)) {
+            post.addLike(user);
+            LOG.debug("Post was liked by '{}'.", username);
+            return postRepository.save(post);
         }
-        LOG.error("Post could not be liked.");
+        LOG.debug("Post could not be liked.");
         return null;
     }
 
@@ -247,18 +233,14 @@ public class PostService implements IPostService {
         );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
+        Post post = optionalPost.get();
 
-        if (optionalPost.isPresent()) {
-
-            Post post = optionalPost.get();
-
-            if (post.getLikes().contains(user)) {
-                post.removeLike(user);
-                LOG.debug("Like was removed by '{}'.", username);
-                return postRepository.save(post);
-            }
+        if (post.getLikes().contains(user)) {
+            post.removeLike(user);
+            LOG.debug("Like was removed by '{}'.", username);
+            return postRepository.save(post);
         }
-        LOG.error("Like could not be removed from the post.");
+        LOG.debug("Like could not be removed from the post.");
         return null;
     }
 
@@ -279,18 +261,13 @@ public class PostService implements IPostService {
         );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
+        Post post = optionalPost.get();
 
-        if (optionalPost.isPresent()) {
+        PostComment comment = new PostComment(post, user, inputComment.getContent(), inputComment.getDate());
+        post.addComment(comment);
 
-            Post post = optionalPost.get();
-            PostComment comment = new PostComment(post, user, inputComment.getContent(), inputComment.getDate());
-            post.addComment(comment);
-
-            LOG.debug("Post was commented by '{}'.", username);
-            return postRepository.save(post);
-        }
-        LOG.error("Comment could not be added to the post.");
-        return null;
+        LOG.debug("Post was commented by '{}'.", username);
+        return postRepository.save(post);
     }
 
     @Override
@@ -307,23 +284,18 @@ public class PostService implements IPostService {
         );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
+        Post post = optionalPost.get();
 
-        if (optionalPost.isPresent()) {
+        for (PostComment comment : post.getComments()) {
 
-            Post post = optionalPost.get();
-            List<PostComment> comments = post.getComments();
+            if (comment.getId().equals(inputComment.getId()) && comment.getUser().getId().equals(user.getId())) {
 
-            for (PostComment comment : comments) {
-
-                if (comment.getId().equals(inputComment.getId()) && comment.getUser().getId().equals(user.getId())) {
-
-                    comment.setContent(inputComment.getContent());
-                    LOG.debug("Comment was updated by '{}'.", username);
-                    return postRepository.save(post);
-                }
+                comment.setContent(inputComment.getContent());
+                LOG.debug("Comment was updated by '{}'.", username);
+                return postRepository.save(post);
             }
         }
-        LOG.error("Comment could not be updated.");
+        LOG.debug("Comment could not be updated.");
         return null;
     }
 
@@ -343,23 +315,18 @@ public class PostService implements IPostService {
         );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
+        Post post = optionalPost.get();
 
-        if (optionalPost.isPresent()) {
+        for (PostComment comment : post.getComments()) {
 
-            Post post = optionalPost.get();
-            List<PostComment> comments = post.getComments();
+            if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
 
-            for (PostComment comment : comments) {
-
-                if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
-
-                    post.removeComment(comment);
-                    LOG.debug("Comment was deleted by '{}'.", username);
-                    return postRepository.save(post);
-                }
+                post.removeComment(comment);
+                LOG.debug("Comment was deleted by '{}'.", username);
+                return postRepository.save(post);
             }
         }
-        LOG.error("Comment could not be deleted.");
+        LOG.debug("Comment could not be deleted.");
         return null;
     }
 
@@ -379,23 +346,18 @@ public class PostService implements IPostService {
         );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
+        Post post = optionalPost.get();
 
-        if (optionalPost.isPresent()) {
+        for (PostComment comment : post.getComments()) {
 
-            Post post = optionalPost.get();
-            List<PostComment> comments = post.getComments();
+            if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
 
-            for (PostComment comment : comments) {
-
-                if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
-
-                    comment.addLike(user);
-                    LOG.debug("Comment was liked by '{}'.", username);
-                    return postRepository.save(post);
-                }
+                comment.addLike(user);
+                LOG.debug("Comment was liked by '{}'.", username);
+                return postRepository.save(post);
             }
         }
-        LOG.error("Comment could not be liked.");
+        LOG.debug("Comment could not be liked.");
         return null;
     }
 
@@ -415,23 +377,18 @@ public class PostService implements IPostService {
         );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
+        Post post = optionalPost.get();
 
-        if (optionalPost.isPresent()) {
+        for (PostComment comment : post.getComments()) {
 
-            Post post = optionalPost.get();
-            List<PostComment> comments = post.getComments();
+            if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
 
-            for (PostComment comment : comments) {
-
-                if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
-
-                    comment.removeLike(user);
-                    LOG.debug("Like was removed by '{}'.", username);
-                    return postRepository.save(post);
-                }
+                comment.removeLike(user);
+                LOG.debug("Like was removed by '{}'.", username);
+                return postRepository.save(post);
             }
         }
-        LOG.error("Like could not be removed from the comment.");
+        LOG.debug("Like could not be removed from the comment.");
         return null;
     }
 }

@@ -76,7 +76,7 @@ public class AuthService implements IAuthService {
 
         if (userRepository.existsByUsername(registerRequest.username())) {
 
-            LOG.warn("Username {} is already taken.", registerRequest.username());
+            LOG.debug("Username {} is already taken.", registerRequest.username());
             response.setMessage(UNSUCCESSFUL_REGISTER.get());
             response.setRegisteredUser(null);
 
@@ -125,7 +125,7 @@ public class AuthService implements IAuthService {
 
         } catch (AuthenticationException e) {
 
-            LOG.warn("Failed login attempt for username: {}", authRequest.username(), e);
+            LOG.debug("Failed login attempt for username: {}", authRequest.username(), e);
             response.setMessage(UNSUCCESSFUL_LOGIN.get());
             response.setAccessToken(null);
 
@@ -154,7 +154,7 @@ public class AuthService implements IAuthService {
 
         } else {
 
-            LOG.warn("Token is invalid or expired.");
+            LOG.debug("Token is invalid or expired.");
             response.setMessage(UNSUCCESSFUL_TOKEN_VALIDATION.get());
             response.setAccessToken(null);
 
