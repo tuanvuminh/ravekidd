@@ -125,6 +125,7 @@ public class UserService implements IUserService {
 
         LOG.debug("Received an changeUsername request.");
         actionHelper.authenticate(authentication);
+        AuthResponse response = new AuthResponse();
 
         try {
             User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
@@ -135,7 +136,10 @@ public class UserService implements IUserService {
                     new UsernamePasswordAuthenticationToken(newUsername, null)
             );
             LOG.debug("User `{}` has changed their username to `{}`.", authentication.getName(), newUsername);
-            return new AuthResponse(SUCCESSFUL_USERNAME_CHANGE.get(), newToken);
+
+            response.setMessage(SUCCESSFUL_USERNAME_CHANGE.get());
+            response.setAccessToken(newToken);
+            return response;
 
         } catch (Exception e) {
             LOG.error("Failed to change username for user: {}", authentication.getName(), e);
