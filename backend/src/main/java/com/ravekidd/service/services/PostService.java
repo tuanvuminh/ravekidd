@@ -78,7 +78,6 @@ public class PostService implements IPostService {
                 if (posts.isEmpty()) {
                     throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(Long.parseLong(parameter)));
                 }
-
                 return posts;
             }
             case QUERY_POST_USER -> {
@@ -88,7 +87,6 @@ public class PostService implements IPostService {
                 if (posts.isEmpty()) {
                     throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_USER_ID.get().formatted(Long.parseLong(parameter)));
                 }
-
                 return posts;
             }
             case QUERY_POST_DATE -> {
@@ -106,7 +104,6 @@ public class PostService implements IPostService {
                             dateTo.toString())
                     );
                 }
-
                 return posts;
             }
             default -> {
