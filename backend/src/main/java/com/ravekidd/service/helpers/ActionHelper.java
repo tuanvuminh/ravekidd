@@ -81,10 +81,10 @@ public class ActionHelper {
      * @return An optional containing the found post, or an empty optional if the post is not found.
      * @throws EntityNotFoundException if the post is not found.
      */
-    public Optional<Post> findPost(Long postId, PostRepository postRepository) {
+    public Post findPost(Long postId, PostRepository postRepository) {
         try {
-            return Optional.ofNullable(postRepository.findById(postId).orElseThrow(
-                    () -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
+            return postRepository.findById(postId).orElseThrow(
+                    () -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId))
             );
         } catch (EntityNotFoundException exception) {
             LOG.debug(exception.getMessage());

@@ -146,9 +146,8 @@ public class PostService implements IPostService {
         LOG.debug("Received an updatePost request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = actionHelper.findPost(updatedPost.getId(), postRepository);
+        Post post = actionHelper.findPost(updatedPost.getId(), postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        Post post = optionalPost.get();
 
         if (post.getUser().getId().equals(user.getId())) {
             inputHelper.patchPost(post, updatedPost);
@@ -168,9 +167,8 @@ public class PostService implements IPostService {
         LOG.debug("Received a deletePost request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
+        Post post = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        Post post = optionalPost.get();
 
         if (post.getUser().getId().equals(user.getId())) {
             postRepository.delete(post);
@@ -190,9 +188,8 @@ public class PostService implements IPostService {
         LOG.debug("Received a likePost request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
+        Post post = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        Post post = optionalPost.get();
 
         if (!post.getLikes().contains(user)) {
             post.addLike(user);
@@ -212,9 +209,8 @@ public class PostService implements IPostService {
         LOG.debug("Received an unlikePost request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
+        Post post = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        Post post = optionalPost.get();
 
         if (post.getLikes().contains(user)) {
             post.removeLike(user);
@@ -235,9 +231,8 @@ public class PostService implements IPostService {
         inputHelper.initInputPostComment(inputComment);
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
+        Post post = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        Post post = optionalPost.get();
 
         PostComment comment = new PostComment(post, user, inputComment.getContent(), inputComment.getDate());
         post.addComment(comment);
@@ -253,9 +248,8 @@ public class PostService implements IPostService {
         inputHelper.initInputPostComment(inputComment);
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
+        Post post = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        Post post = optionalPost.get();
 
         for (PostComment comment : post.getComments()) {
 
@@ -279,9 +273,8 @@ public class PostService implements IPostService {
         LOG.debug("Received a deleteComment request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
+        Post post = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        Post post = optionalPost.get();
 
         for (PostComment comment : post.getComments()) {
 
@@ -305,9 +298,8 @@ public class PostService implements IPostService {
         LOG.debug("Received a likeComment request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
+        Post post = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        Post post = optionalPost.get();
 
         for (PostComment comment : post.getComments()) {
 
@@ -331,9 +323,8 @@ public class PostService implements IPostService {
         LOG.debug("Received an unlikeComment request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = actionHelper.findPost(postId, postRepository);
+        Post post = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        Post post = optionalPost.get();
 
         for (PostComment comment : post.getComments()) {
 

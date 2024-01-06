@@ -1,5 +1,6 @@
 package com.ravekidd.service.helpers;
 
+import com.ravekidd.consts.Constants;
 import com.ravekidd.model.Post;
 import com.ravekidd.model.PostComment;
 import com.ravekidd.model.Role;
@@ -55,7 +56,7 @@ public class InputHelper {
         }
 
         if (input.getImage() == null) {
-            input.setImage("");
+            input.setImage("default.jpg");
         }
 
         if (input.getPassword() == null) {
@@ -157,11 +158,11 @@ public class InputHelper {
         for (Role role : input) {
 
             if (role.getId() == null) {
-                role.setId(0L);
+                role.setId(2L);
             }
 
             if (role.getName() == null) {
-                role.setName("");
+                role.setName(Constants.ROLE_USER);
             }
 
         }

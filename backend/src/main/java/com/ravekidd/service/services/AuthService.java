@@ -6,6 +6,7 @@ import com.ravekidd.model.auth.AuthRequest;
 import com.ravekidd.model.auth.RegisterRequest;
 import com.ravekidd.model.auth.RegisterResponse;
 import com.ravekidd.security.token.JWTProvider;
+import com.ravekidd.service.helpers.InputHelper;
 import com.ravekidd.service.interfaces.IAuthService;
 import com.ravekidd.service.repositories.RoleRepository;
 import com.ravekidd.service.repositories.UserRepository;
@@ -42,6 +43,7 @@ public class AuthService implements IAuthService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JWTProvider jwtProvider;
+    private final InputHelper inputHelper;
 
     /**
      * Constructor for AuthService.
@@ -57,12 +59,14 @@ public class AuthService implements IAuthService {
                        UserRepository userRepository,
                        RoleRepository roleRepository,
                        PasswordEncoder passwordEncoder,
-                       JWTProvider jwtProvider) {
+                       JWTProvider jwtProvider,
+                       InputHelper inputHelper) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
+        this.inputHelper = inputHelper;
     }
 
     /**
@@ -91,6 +95,7 @@ public class AuthService implements IAuthService {
         } else {
             user.setRoles(Collections.singletonList(roleRepository.findByName(Constants.ROLE_USER).get()));
         }
+        inputHelper.initInputUser(user);
         userRepository.save(user);
 
         response.setMessage(SUCCESSFUL_REGISTER.get());
