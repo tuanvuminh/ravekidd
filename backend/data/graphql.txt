@@ -1,0 +1,204 @@
+query {
+	getUsers {
+		roles {
+			name
+		}
+		id
+		username
+		image
+		password
+		posts {
+			id
+			description
+			link
+			date
+		}
+	}
+}
+// query: {"id", "username"}
+query {
+	getUsers (query: String, parameter: String){
+		roles {
+			name
+		}
+		id
+		username
+		image
+		password
+		posts {
+			id
+			description
+			link
+			date
+		}
+	}
+}
+
+mutation {
+	deleteUser(id: ID) {
+		id
+		username
+	}
+}
+
+mutation {
+	changeUsername(newUsername: String) {
+		accessToken
+		message
+	}
+}
+
+mutation {
+	changeImage(newImage: String) {
+		id
+		username
+		image
+	}
+}
+
+// query: {"id", "user", "date"}
+query {
+	getPosts(query: String, parameter: String) {
+		id
+		link
+		description
+		date
+		comments {
+			id
+			content
+		}
+		likes {
+			id
+			username
+		}
+	}
+}
+
+mutation {
+	createPost(post: { description: String, link: String }) {
+		id
+		date
+		description
+		link
+	}
+}
+
+mutation {
+	updatePost(post: { id: ID, description: String, link: String }) {
+		id
+		date
+		description
+		link
+	}
+}
+
+mutation {
+	likePost(postId: ID) {
+		id
+		link
+		likes {
+			username
+		}
+	}
+}
+
+mutation {
+	unlikePost(postId: ID) {
+		id
+		link
+		likes {
+			username
+		}
+	}
+}
+
+mutation {
+	deletePost(postId: ID) {
+		id
+		date
+		description
+		link
+	}
+}
+
+mutation {
+	addComment(postId: ID, comment: { content: String }) {
+		id
+		description
+		link
+		comments {
+		    id
+			content
+			user {
+				username
+			}
+		}
+	}
+}
+
+mutation {
+	updateComment(postId: ID, comment: { id: ID, content: String }) {
+		id
+		description
+		link
+		comments {
+		    id
+			content
+			user {
+				username
+			}
+		}
+	}
+}
+
+mutation {
+	deleteComment(postId: ID, comment: { id: ID }) {
+		id
+		description
+		link
+		comments {
+			id
+			content
+			user {
+				username
+			}
+		}
+	}
+}
+
+mutation {
+	likeComment(postId: ID, comment: { id: ID }) {
+		id
+		description
+		link
+		comments {
+			id
+			content
+			user {
+				username
+			}
+			likes {
+				username
+			}
+		}
+	}
+}
+
+mutation {
+	unlikeComment(postId: ID, comment: { id: ID }) {
+		id
+		description
+		link
+		comments {
+			id
+			content
+			user {
+				username
+			}
+			likes {
+				username
+			}
+		}
+	}
+}
+

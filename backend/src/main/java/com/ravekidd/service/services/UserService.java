@@ -7,6 +7,7 @@ import com.ravekidd.service.helpers.ActionHelper;
 import com.ravekidd.service.helpers.InputHelper;
 import com.ravekidd.service.interfaces.IUserService;
 import com.ravekidd.service.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.ravekidd.consts.Constants.*;
@@ -70,20 +72,32 @@ public class UserService implements IUserService {
         switch (query) {
             case QUERY_USER_ID -> {
                 LOG.debug("Finding user by id {}...", parameter);
-                long userId = Long.parseLong(parameter);
-                users = userRepository.findUserById(userId);
+                users = userRepository.findUserById(Long.parseLong(parameter));
+
+                if (users.isEmpty()) {
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(Long.parseLong(parameter)));
+                }
+                return users;
             }
             case QUERY_USER_USERNAME -> {
                 LOG.debug("Finding user by username {}...", parameter);
                 users = userRepository.findUserByUsername(parameter);
+
+                if (users.isEmpty()) {
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(parameter));
+                }
+                return users;
             }
             default -> {
                 LOG.debug("Retrieving all users...");
                 users = userRepository.findAll();
+
+                if (users.isEmpty()) {
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USERS.get());
+                }
+                return users;
             }
         }
-        LOG.debug("Users retrieved successfully: {}", users);
-        return users;
     }
 
     /**
@@ -109,7 +123,7 @@ public class UserService implements IUserService {
     @Override
     public AuthResponse changeUsername(String newUsername, Authentication authentication) {
 
-        LOG.debug("Received a changeUsername request.");
+        LOG.debug("Received an changeUsername request.");
         actionHelper.authenticate(authentication);
 
         try {
@@ -118,10 +132,10 @@ public class UserService implements IUserService {
             userRepository.save(user);
 
             String newToken = jwtProvider.generateToken(
-                    new UsernamePasswordAuthenticationToken(newUsername, null));
-
+                    new UsernamePasswordAuthenticationToken(newUsername, null)
+            );
             LOG.debug("User `{}` has changed their username to `{}`.", authentication.getName(), newUsername);
-            return new AuthResponse(SUCCESSFUL_USERNAME_CHANGE.getMessage(), newToken);
+            return new AuthResponse(SUCCESSFUL_USERNAME_CHANGE.get(), newToken);
 
         } catch (Exception e) {
             LOG.error("Failed to change username for user: {}", authentication.getName(), e);

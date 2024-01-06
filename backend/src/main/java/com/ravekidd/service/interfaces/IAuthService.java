@@ -1,8 +1,9 @@
 package com.ravekidd.service.interfaces;
 
 import com.ravekidd.model.auth.AuthResponse;
-import com.ravekidd.model.auth.LoginRequest;
+import com.ravekidd.model.auth.AuthRequest;
 import com.ravekidd.model.auth.RegisterRequest;
+import com.ravekidd.model.auth.RegisterResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 
@@ -17,15 +18,15 @@ public interface IAuthService {
      * @param registerRequest Register request containing user information.
      * @return ResponseEntity containing the registration result.
      */
-    ResponseEntity<String> register(RegisterRequest registerRequest);
+    ResponseEntity<RegisterResponse> register(RegisterRequest registerRequest);
 
     /**
      * Logs in the user with the provided login request.
      *
-     * @param loginRequest Login request containing the user's credentials.
+     * @param authRequest Login request containing the user's credentials.
      * @return Authentication response containing a bearer token.
      */
-    ResponseEntity<AuthResponse> login(LoginRequest loginRequest);
+    ResponseEntity<AuthResponse> login(AuthRequest authRequest);
 
     /**
      * Validates a token.

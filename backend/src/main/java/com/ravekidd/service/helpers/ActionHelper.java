@@ -22,7 +22,7 @@ public class ActionHelper {
      */
     public void authenticate(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new SecurityException(UNSUCCESSFUL_AUTHENTICATION.getMessage());
+            throw new SecurityException(UNSUCCESSFUL_AUTHENTICATION.get());
         }
     }
 
@@ -36,7 +36,7 @@ public class ActionHelper {
      */
     public User findUserByUsername(String username, UserRepository userRepository) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_USERNAME.getMessage().formatted(username)));
+                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(username)));
     }
 
     /**
@@ -49,6 +49,6 @@ public class ActionHelper {
      */
     public User findUserById(Long id, UserRepository userRepository) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_ID.getMessage().formatted(id)));
+                .orElseThrow(() -> new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(id)));
     }
 }

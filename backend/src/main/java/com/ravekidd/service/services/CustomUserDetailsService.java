@@ -51,6 +51,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
+
+
     /**
      * Maps a list of Role objects to a list of GrantedAuthority objects.
      *

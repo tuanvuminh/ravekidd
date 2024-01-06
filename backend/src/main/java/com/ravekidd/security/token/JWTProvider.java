@@ -91,7 +91,7 @@ public class JWTProvider {
             return true;
 
         } catch (Exception e) {
-            throw new AuthenticationCredentialsNotFoundException(UNSUCCESSFUL_TOKEN_VALIDATION.getMessage(), e);
+            throw new AuthenticationCredentialsNotFoundException(UNSUCCESSFUL_TOKEN_VALIDATION.get(), e);
         }
     }
 }

@@ -8,6 +8,7 @@ import com.ravekidd.service.helpers.InputHelper;
 import com.ravekidd.service.interfaces.IPostService;
 import com.ravekidd.service.repositories.PostRepository;
 import com.ravekidd.service.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ravekidd.consts.Constants.*;
+import static com.ravekidd.consts.Messages.*;
 
 /**
  * Service class for managing posts and related actions.
@@ -71,26 +73,52 @@ public class PostService implements IPostService {
         switch (query) {
             case QUERY_POST_ID -> {
                 LOG.debug("Finding post by id {}...", parameter);
-                long postId = Long.parseLong(parameter);
-                posts = postRepository.findById(postId);
+                posts = postRepository.findById(Long.parseLong(parameter));
+
+                if (posts.isEmpty()) {
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(Long.parseLong(parameter)));
+                }
+
+                return posts;
             }
             case QUERY_POST_USER -> {
                 LOG.debug("Finding post by userId {}...", parameter);
-                long userId = Long.parseLong(parameter);
-                posts = postRepository.findByUserId(userId);
+                posts = postRepository.findByUserId(Long.parseLong(parameter));
+
+                if (posts.isEmpty()) {
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_USER_ID.get().formatted(Long.parseLong(parameter)));
+                }
+
+                return posts;
             }
             case QUERY_POST_DATE -> {
-                LOG.debug("Finding post by date {}...", parameter);
-                LocalDateTime dateTime = inputHelper.transformStringToDateTime(parameter);
-                posts = postRepository.findByDate(dateTime);
+                String[] dates = parameter.split(" x ");
+
+                LocalDateTime dateFrom = inputHelper.transformStringToDateTime(dates[0]);
+                LocalDateTime dateTo = inputHelper.transformStringToDateTime(dates[1]);
+
+                LOG.debug("Finding posts between dates {} and {}...", dateFrom, dateTo);
+                posts = postRepository.findByDateBetween(dateFrom, dateTo);
+
+                if (posts.isEmpty()) {
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BETWEEN_DATES.get().formatted(
+                            dateFrom.toString(),
+                            dateTo.toString())
+                    );
+                }
+
+                return posts;
             }
             default -> {
                 LOG.debug("Retrieving all posts...");
                 posts = postRepository.findAll();
+
+                if (posts.isEmpty()) {
+                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POSTS.get().formatted(parameter));
+                }
+                return posts;
             }
         }
-        LOG.debug("Posts retrieved successfully: {}", posts);
-        return posts;
     }
 
     /**
@@ -117,10 +145,14 @@ public class PostService implements IPostService {
     @Override
     public Post updatePost(Post updatedPost, Authentication authentication) {
 
-        LOG.debug("Received a updatePost request.");
+        LOG.debug("Received an updatePost request.");
         actionHelper.authenticate(authentication);
 
-        Optional<Post> optionalPost = postRepository.findById(updatedPost.getId());
+        Optional<Post> optionalPost = Optional.ofNullable(
+                postRepository.findById(updatedPost.getId())
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(updatedPost.getId())))
+        );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
 
@@ -149,9 +181,13 @@ public class PostService implements IPostService {
         LOG.debug("Received a deletePost request.");
         actionHelper.authenticate(authentication);
 
+        Optional<Post> optionalPost = Optional.ofNullable(
+                postRepository.findById(postId)
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
+        );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
-        Optional<Post> optionalPost = postRepository.findById(postId);
 
         if (optionalPost.isPresent()) {
 
@@ -176,9 +212,13 @@ public class PostService implements IPostService {
         LOG.debug("Received a likePost request.");
         actionHelper.authenticate(authentication);
 
+        Optional<Post> optionalPost = Optional.ofNullable(
+                postRepository.findById(postId)
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
+        );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
-        Optional<Post> optionalPost = postRepository.findById(postId);
 
         if (optionalPost.isPresent()) {
 
@@ -200,12 +240,16 @@ public class PostService implements IPostService {
     @Override
     public Post unlikePost(Long postId, Authentication authentication) {
 
-        LOG.debug("Received a unlikePost request.");
+        LOG.debug("Received an unlikePost request.");
         actionHelper.authenticate(authentication);
 
+        Optional<Post> optionalPost = Optional.ofNullable(
+                postRepository.findById(postId)
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
+        );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
-        Optional<Post> optionalPost = postRepository.findById(postId);
 
         if (optionalPost.isPresent()) {
 
@@ -227,13 +271,17 @@ public class PostService implements IPostService {
     @Override
     public Post addComment(Long postId, PostComment inputComment, Authentication authentication) {
 
-        LOG.debug("Received a addComment request.");
+        LOG.debug("Received an addComment request.");
         inputHelper.initInputPostComment(inputComment);
         actionHelper.authenticate(authentication);
 
+        Optional<Post> optionalPost = Optional.ofNullable(
+                postRepository.findById(postId)
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
+        );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
-        Optional<Post> optionalPost = postRepository.findById(postId);
 
         if (optionalPost.isPresent()) {
 
@@ -251,13 +299,17 @@ public class PostService implements IPostService {
     @Override
     public Post updateComment(Long postId, PostComment inputComment, Authentication authentication) {
 
-        LOG.debug("Received a updateComment request.");
+        LOG.debug("Received an updateComment request.");
         inputHelper.initInputPostComment(inputComment);
         actionHelper.authenticate(authentication);
 
+        Optional<Post> optionalPost = Optional.ofNullable(
+                postRepository.findById(postId)
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
+        );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
-        Optional<Post> optionalPost = postRepository.findById(postId);
 
         if (optionalPost.isPresent()) {
 
@@ -282,15 +334,18 @@ public class PostService implements IPostService {
      * @inheritDoc
      */
     @Override
-    public Post deleteComment(Long postId, PostComment inputComment, Authentication authentication) {
+    public Post deleteComment(Long postId, Long commentId, Authentication authentication) {
 
         LOG.debug("Received a deleteComment request.");
-        inputHelper.initInputPostComment(inputComment);
         actionHelper.authenticate(authentication);
 
+        Optional<Post> optionalPost = Optional.ofNullable(
+                postRepository.findById(postId)
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
+        );
         String username = authentication.getName();
         User user = actionHelper.findUserByUsername(username, userRepository);
-        Optional<Post> optionalPost = postRepository.findById(postId);
 
         if (optionalPost.isPresent()) {
 
@@ -299,7 +354,7 @@ public class PostService implements IPostService {
 
             for (PostComment comment : comments) {
 
-                if (comment.getId().equals(inputComment.getId()) && comment.getUser().getId().equals(user.getId())) {
+                if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
 
                     post.removeComment(comment);
                     LOG.debug("Comment was deleted by '{}'.", username);
@@ -308,6 +363,78 @@ public class PostService implements IPostService {
             }
         }
         LOG.error("Comment could not be deleted.");
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public Post likeComment(Long postId, Long commentId, Authentication authentication) {
+
+        LOG.debug("Received a likeComment request.");
+        actionHelper.authenticate(authentication);
+
+        Optional<Post> optionalPost = Optional.ofNullable(
+                postRepository.findById(postId)
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
+        );
+        String username = authentication.getName();
+        User user = actionHelper.findUserByUsername(username, userRepository);
+
+        if (optionalPost.isPresent()) {
+
+            Post post = optionalPost.get();
+            List<PostComment> comments = post.getComments();
+
+            for (PostComment comment : comments) {
+
+                if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
+
+                    comment.addLike(user);
+                    LOG.debug("Comment was liked by '{}'.", username);
+                    return postRepository.save(post);
+                }
+            }
+        }
+        LOG.error("Comment could not be liked.");
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public Post unlikeComment(Long postId, Long commentId, Authentication authentication) {
+
+        LOG.debug("Received an unlikeComment request.");
+        actionHelper.authenticate(authentication);
+
+        Optional<Post> optionalPost = Optional.ofNullable(
+                postRepository.findById(postId)
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
+        );
+        String username = authentication.getName();
+        User user = actionHelper.findUserByUsername(username, userRepository);
+
+        if (optionalPost.isPresent()) {
+
+            Post post = optionalPost.get();
+            List<PostComment> comments = post.getComments();
+
+            for (PostComment comment : comments) {
+
+                if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
+
+                    comment.removeLike(user);
+                    LOG.debug("Like was removed by '{}'.", username);
+                    return postRepository.save(post);
+                }
+            }
+        }
+        LOG.error("Like could not be removed from the comment.");
         return null;
     }
 }

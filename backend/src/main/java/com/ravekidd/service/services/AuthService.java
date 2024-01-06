@@ -1,10 +1,10 @@
 package com.ravekidd.service.services;
 
-import com.ravekidd.model.Role;
 import com.ravekidd.model.User;
 import com.ravekidd.model.auth.AuthResponse;
-import com.ravekidd.model.auth.LoginRequest;
+import com.ravekidd.model.auth.AuthRequest;
 import com.ravekidd.model.auth.RegisterRequest;
+import com.ravekidd.model.auth.RegisterResponse;
 import com.ravekidd.security.token.JWTProvider;
 import com.ravekidd.service.interfaces.IAuthService;
 import com.ravekidd.service.repositories.RoleRepository;
@@ -69,54 +69,64 @@ public class AuthService implements IAuthService {
      * @inheritDoc
      */
     @Override
-    public ResponseEntity<String> register(RegisterRequest registerRequest) {
+    public ResponseEntity<RegisterResponse> register(RegisterRequest registerRequest) {
 
-        LOG.debug("Received registration request for username: {}", registerRequest.username());
+        LOG.debug("Received a registration request for username: {}", registerRequest.username());
+        RegisterResponse response = new RegisterResponse();
 
         if (userRepository.existsByUsername(registerRequest.username())) {
-            LOG.warn("Username {} is already taken.", registerRequest.username());
-            return new ResponseEntity<>(UNSUCCESSFUL_REGISTER.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        Role roles = roleRepository.findByName(Constants.ROLE_USER).get();
 
+            LOG.warn("Username {} is already taken.", registerRequest.username());
+            response.setMessage(UNSUCCESSFUL_REGISTER.get());
+            response.setRegisteredUser(null);
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
         User user = new User();
         user.setUsername(registerRequest.username());
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
-        user.setRoles(Collections.singletonList(roles));
+
+        if (registerRequest.username().equals("ravekidd-admin")) {
+            user.setRoles(Collections.singletonList(roleRepository.findByName(Constants.ROLE_ADMIN).get()));
+        } else {
+            user.setRoles(Collections.singletonList(roleRepository.findByName(Constants.ROLE_USER).get()));
+        }
 
         userRepository.save(user);
+        response.setMessage(SUCCESSFUL_REGISTER.get());
+        response.setRegisteredUser(user);
 
         LOG.debug("User registered with username: {}", registerRequest.username());
-        return ResponseEntity.status(HttpStatus.OK).body(SUCCESSFUL_REGISTER.getMessage());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public ResponseEntity<AuthResponse> login(LoginRequest loginRequest) {
+    public ResponseEntity<AuthResponse> login(AuthRequest authRequest) {
 
-        LOG.debug("Received login request for username: {}", loginRequest.username());
+        LOG.debug("Received a login request for username: {}", authRequest.username());
         AuthResponse response = new AuthResponse();
 
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    loginRequest.username(),
-                    loginRequest.password())
+                    authRequest.username(),
+                    authRequest.password())
             );
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtProvider.generateToken(authentication);
 
-            LOG.debug("User: {} successfully logged in.", loginRequest.username());
-            response.setMessage(SUCCESSFUL_LOGIN.getMessage());
+            LOG.debug("User: {} successfully logged in.", authRequest.username());
+            response.setMessage(SUCCESSFUL_LOGIN.get());
             response.setAccessToken(token);
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
 
         } catch (AuthenticationException e) {
 
-            LOG.warn("Failed login attempt for username: {}", loginRequest.username(), e);
-            response.setMessage(UNSUCCESSFUL_LOGIN.getMessage());
+            LOG.warn("Failed login attempt for username: {}", authRequest.username(), e);
+            response.setMessage(UNSUCCESSFUL_LOGIN.get());
             response.setAccessToken(null);
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
@@ -137,7 +147,7 @@ public class AuthService implements IAuthService {
         if (token != null && jwtProvider.validateToken(token)) {
 
             LOG.debug("Token is valid.");
-            response.setMessage(SUCCESSFUL_TOKEN_VALIDATION.getMessage());
+            response.setMessage(SUCCESSFUL_TOKEN_VALIDATION.get());
             response.setAccessToken(token);
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -145,7 +155,7 @@ public class AuthService implements IAuthService {
         } else {
 
             LOG.warn("Token is invalid or expired.");
-            response.setMessage(UNSUCCESSFUL_TOKEN_VALIDATION.getMessage());
+            response.setMessage(UNSUCCESSFUL_TOKEN_VALIDATION.get());
             response.setAccessToken(null);
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

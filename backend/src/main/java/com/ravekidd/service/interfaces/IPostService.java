@@ -84,9 +84,30 @@ public interface IPostService {
     /**
      * Deletes a comment from a post.
      *
-     * @param comment        Comment to be deleted.
+     * @param commentId      ID of the comment to be deleted.
      * @param authentication Authentication of the user.
      * @return The post with deleted comment.
      */
-    Post deleteComment(Long postId, PostComment comment, Authentication authentication);
+    Post deleteComment(Long postId, Long commentId, Authentication authentication);
+
+
+    /**
+     * Likes a comment on a post.
+     *
+     * @param postId         ID of the post containing the comment.
+     * @param commentId      ID of the comment to be liked.
+     * @param authentication Authentication of the user.
+     * @return The post with the liked comment.
+     */
+    Post likeComment(Long postId, Long commentId, Authentication authentication);
+
+    /**
+     * Unlikes a comment on a post.
+     *
+     * @param postId         ID of the post containing the comment.
+     * @param commentId      ID of the comment to be unliked.
+     * @param authentication Authentication of the user.
+     * @return The post with the unliked comment.
+     */
+    Post unlikeComment(Long postId, Long commentId, Authentication authentication);
 }

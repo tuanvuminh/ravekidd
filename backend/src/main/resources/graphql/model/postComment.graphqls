@@ -3,6 +3,7 @@ type PostComment {
     user: User
     content: String
     post: Post
+    likes: [User]
 }
 
 input PostCommentInput {

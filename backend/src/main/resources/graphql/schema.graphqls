@@ -18,7 +18,10 @@ type Mutation {
 
     addComment(postId: ID, comment: PostCommentInput): Post
     updateComment(postId: ID, comment: PostCommentInput): Post
-    deleteComment(postId: ID, comment: PostCommentInput): Post
+    deleteComment(postId: ID, commentId: ID): Post
+
+    likeComment(postId: ID, commentId: ID): Post
+    unlikeComment(postId: ID, commentId: ID): Post
 }
 
 
