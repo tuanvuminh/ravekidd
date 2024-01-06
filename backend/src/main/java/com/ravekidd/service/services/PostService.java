@@ -128,8 +128,7 @@ public class PostService implements IPostService {
         inputHelper.initInputPost(post);
         actionHelper.authenticate(authentication);
 
-        String username = authentication.getName();
-        User user = actionHelper.findUserByUsername(username, userRepository);
+        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         post.setUser(user);
 
         LOG.debug("Post was created.");
@@ -150,13 +149,12 @@ public class PostService implements IPostService {
                         .orElseThrow(() -> new EntityNotFoundException(
                                 UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(updatedPost.getId())))
         );
-        String username = authentication.getName();
-        User user = actionHelper.findUserByUsername(username, userRepository);
+        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
         if (post.getUser().getId().equals(user.getId())) {
             inputHelper.patchPost(post, updatedPost);
-            LOG.debug("Post was successfully updated by '{}'.", username);
+            LOG.debug("Post was successfully updated by '{}'.", authentication.getName());
             return postRepository.save(post);
         }
         LOG.debug("Post could not be updated.");
@@ -177,8 +175,7 @@ public class PostService implements IPostService {
                         .orElseThrow(() -> new EntityNotFoundException(
                                 UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
         );
-        String username = authentication.getName();
-        User user = actionHelper.findUserByUsername(username, userRepository);
+        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
         if (post.getUser().getId().equals(user.getId())) {
@@ -204,13 +201,12 @@ public class PostService implements IPostService {
                         .orElseThrow(() -> new EntityNotFoundException(
                                 UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
         );
-        String username = authentication.getName();
-        User user = actionHelper.findUserByUsername(username, userRepository);
+        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
         if (!post.getLikes().contains(user)) {
             post.addLike(user);
-            LOG.debug("Post was liked by '{}'.", username);
+            LOG.debug("Post was liked by '{}'.", authentication.getName());
             return postRepository.save(post);
         }
         LOG.debug("Post could not be liked.");
@@ -231,13 +227,12 @@ public class PostService implements IPostService {
                         .orElseThrow(() -> new EntityNotFoundException(
                                 UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
         );
-        String username = authentication.getName();
-        User user = actionHelper.findUserByUsername(username, userRepository);
+        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
         if (post.getLikes().contains(user)) {
             post.removeLike(user);
-            LOG.debug("Like was removed by '{}'.", username);
+            LOG.debug("Like was removed by '{}'.", authentication.getName());
             return postRepository.save(post);
         }
         LOG.debug("Like could not be removed from the post.");
@@ -259,14 +254,13 @@ public class PostService implements IPostService {
                         .orElseThrow(() -> new EntityNotFoundException(
                                 UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
         );
-        String username = authentication.getName();
-        User user = actionHelper.findUserByUsername(username, userRepository);
+        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
         PostComment comment = new PostComment(post, user, inputComment.getContent(), inputComment.getDate());
         post.addComment(comment);
 
-        LOG.debug("Post was commented by '{}'.", username);
+        LOG.debug("Post was commented by '{}'.", authentication.getName());
         return postRepository.save(post);
     }
 
@@ -282,8 +276,7 @@ public class PostService implements IPostService {
                         .orElseThrow(() -> new EntityNotFoundException(
                                 UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
         );
-        String username = authentication.getName();
-        User user = actionHelper.findUserByUsername(username, userRepository);
+        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
         for (PostComment comment : post.getComments()) {
@@ -291,7 +284,7 @@ public class PostService implements IPostService {
             if (comment.getId().equals(inputComment.getId()) && comment.getUser().getId().equals(user.getId())) {
 
                 comment.setContent(inputComment.getContent());
-                LOG.debug("Comment was updated by '{}'.", username);
+                LOG.debug("Comment was updated by '{}'.", authentication.getName());
                 return postRepository.save(post);
             }
         }
@@ -313,8 +306,7 @@ public class PostService implements IPostService {
                         .orElseThrow(() -> new EntityNotFoundException(
                                 UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
         );
-        String username = authentication.getName();
-        User user = actionHelper.findUserByUsername(username, userRepository);
+        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
         for (PostComment comment : post.getComments()) {
@@ -322,7 +314,7 @@ public class PostService implements IPostService {
             if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
 
                 post.removeComment(comment);
-                LOG.debug("Comment was deleted by '{}'.", username);
+                LOG.debug("Comment was deleted by '{}'.", authentication.getName());
                 return postRepository.save(post);
             }
         }
@@ -344,8 +336,7 @@ public class PostService implements IPostService {
                         .orElseThrow(() -> new EntityNotFoundException(
                                 UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
         );
-        String username = authentication.getName();
-        User user = actionHelper.findUserByUsername(username, userRepository);
+        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
         for (PostComment comment : post.getComments()) {
@@ -353,7 +344,7 @@ public class PostService implements IPostService {
             if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
 
                 comment.addLike(user);
-                LOG.debug("Comment was liked by '{}'.", username);
+                LOG.debug("Comment was liked by '{}'.", authentication.getName());
                 return postRepository.save(post);
             }
         }
@@ -375,8 +366,7 @@ public class PostService implements IPostService {
                         .orElseThrow(() -> new EntityNotFoundException(
                                 UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
         );
-        String username = authentication.getName();
-        User user = actionHelper.findUserByUsername(username, userRepository);
+        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         Post post = optionalPost.get();
 
         for (PostComment comment : post.getComments()) {
@@ -384,7 +374,7 @@ public class PostService implements IPostService {
             if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
 
                 comment.removeLike(user);
-                LOG.debug("Like was removed by '{}'.", username);
+                LOG.debug("Like was removed by '{}'.", authentication.getName());
                 return postRepository.save(post);
             }
         }
