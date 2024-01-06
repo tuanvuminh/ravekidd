@@ -87,7 +87,7 @@ public class ActionHelper {
                     () -> new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)))
             );
         } catch (EntityNotFoundException exception) {
-            LOG.error(exception.getMessage());
+            LOG.debug(exception.getMessage());
             throw exception;
         }
     }
