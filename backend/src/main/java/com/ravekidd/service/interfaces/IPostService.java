@@ -1,5 +1,6 @@
 package com.ravekidd.service.interfaces;
 
+import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.Post;
 import com.ravekidd.model.PostComment;
 import org.springframework.security.core.Authentication;
@@ -34,7 +35,7 @@ public interface IPostService {
      * @param authentication Authentication object representing the current user.
      * @return The post with the updated content.
      */
-    Post updatePost(Post post, Authentication authentication);
+    Post updatePost(Post post, Authentication authentication) throws ServerException;
 
     /**
      * Deletes a post with the given ID for the authenticated user.
@@ -43,7 +44,7 @@ public interface IPostService {
      * @param authentication Authentication of the user.
      * @return The deleted post.
      */
-    Post deletePost(Long postId, Authentication authentication);
+    Post deletePost(Long postId, Authentication authentication) throws ServerException;
 
     /**
      * Likes a post.
@@ -52,7 +53,7 @@ public interface IPostService {
      * @param authentication Authentication of the user.
      * @return The liked post.
      */
-    Post likePost(Long postId, Authentication authentication);
+    Post likePost(Long postId, Authentication authentication) throws ServerException;
 
     /**
      * Unlikes a post.
@@ -61,7 +62,7 @@ public interface IPostService {
      * @param authentication Authentication of the user.
      * @return The unliked post.
      */
-    Post unlikePost(Long postId, Authentication authentication);
+    Post unlikePost(Long postId, Authentication authentication) throws ServerException;
 
     /**
      * Adds a comment to a post.
@@ -79,7 +80,7 @@ public interface IPostService {
      * @param authentication Authentication of the user.
      * @return The post with the updated comment.
      */
-    Post updateComment(Long postId, PostComment comment, Authentication authentication);
+    Post updateComment(Long postId, PostComment comment, Authentication authentication) throws ServerException;
 
     /**
      * Deletes a comment from a post.
@@ -88,7 +89,7 @@ public interface IPostService {
      * @param authentication Authentication of the user.
      * @return The post with deleted comment.
      */
-    Post deleteComment(Long postId, Long commentId, Authentication authentication);
+    Post deleteComment(Long postId, Long commentId, Authentication authentication) throws ServerException;
 
 
     /**
@@ -99,7 +100,7 @@ public interface IPostService {
      * @param authentication Authentication of the user.
      * @return The post with the liked comment.
      */
-    Post likeComment(Long postId, Long commentId, Authentication authentication);
+    Post likeComment(Long postId, Long commentId, Authentication authentication) throws ServerException;
 
     /**
      * Unlikes a comment on a post.
@@ -109,5 +110,5 @@ public interface IPostService {
      * @param authentication Authentication of the user.
      * @return The post with the unliked comment.
      */
-    Post unlikeComment(Long postId, Long commentId, Authentication authentication);
+    Post unlikeComment(Long postId, Long commentId, Authentication authentication) throws ServerException;
 }

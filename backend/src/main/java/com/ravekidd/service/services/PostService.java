@@ -1,5 +1,6 @@
 package com.ravekidd.service.services;
 
+import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.Post;
 import com.ravekidd.model.PostComment;
 import com.ravekidd.model.User;
@@ -121,7 +122,7 @@ public class PostService implements IPostService {
      * @inheritDoc
      */
     @Override
-    public Post updatePost(Post updatedPost, Authentication authentication) {
+    public Post updatePost(Post updatedPost, Authentication authentication) throws ServerException {
 
         LOG.debug("Received an updatePost request.");
         actionHelper.authenticate(authentication);
@@ -133,16 +134,17 @@ public class PostService implements IPostService {
             inputHelper.patchPost(post, updatedPost);
             LOG.debug("Post was successfully updated by '{}'.", authentication.getName());
             return postRepository.save(post);
+        } else {
+            LOG.debug("Post could not be updated.");
+            throw new ServerException("Post could not be updated.");
         }
-        LOG.debug("Post could not be updated.");
-        return null;
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public Post deletePost(Long postId, Authentication authentication) {
+    public Post deletePost(Long postId, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a deletePost request.");
         actionHelper.authenticate(authentication);
@@ -154,16 +156,17 @@ public class PostService implements IPostService {
             postRepository.delete(post);
             LOG.debug("Post was deleted.");
             return post;
+        } else {
+            LOG.debug("Post could not be deleted.");
+            throw new ServerException("Post could not be deleted.");
         }
-        LOG.debug("Post could not be deleted.");
-        return null;
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public Post likePost(Long postId, Authentication authentication) {
+    public Post likePost(Long postId, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a likePost request.");
         actionHelper.authenticate(authentication);
@@ -175,16 +178,17 @@ public class PostService implements IPostService {
             post.addLike(user);
             LOG.debug("Post was liked by '{}'.", authentication.getName());
             return postRepository.save(post);
+        } else {
+            LOG.debug("Post could not be liked.");
+            throw new ServerException("Post could not be liked.");
         }
-        LOG.debug("Post could not be liked.");
-        return null;
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public Post unlikePost(Long postId, Authentication authentication) {
+    public Post unlikePost(Long postId, Authentication authentication) throws ServerException {
 
         LOG.debug("Received an unlikePost request.");
         actionHelper.authenticate(authentication);
@@ -196,9 +200,10 @@ public class PostService implements IPostService {
             post.removeLike(user);
             LOG.debug("Like was removed by '{}'.", authentication.getName());
             return postRepository.save(post);
+        } else {
+            LOG.debug("Like could not be removed from the post.");
+            throw new ServerException("Like could not be removed from the post.");
         }
-        LOG.debug("Like could not be removed from the post.");
-        return null;
     }
 
     /**
@@ -222,7 +227,8 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public Post updateComment(Long postId, PostComment inputComment, Authentication authentication) {
+    public Post updateComment(Long postId, PostComment inputComment, Authentication authentication)
+            throws ServerException {
 
         LOG.debug("Received an updateComment request.");
         actionHelper.authenticate(authentication);
@@ -241,14 +247,14 @@ public class PostService implements IPostService {
             }
         }
         LOG.debug("Comment could not be updated.");
-        return null;
+        throw new ServerException("Comment could not be updated.");
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public Post deleteComment(Long postId, Long commentId, Authentication authentication) {
+    public Post deleteComment(Long postId, Long commentId, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a deleteComment request.");
         actionHelper.authenticate(authentication);
@@ -266,14 +272,14 @@ public class PostService implements IPostService {
             }
         }
         LOG.debug("Comment could not be deleted.");
-        return null;
+        throw new ServerException("Comment could not be deleted.");
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public Post likeComment(Long postId, Long commentId, Authentication authentication) {
+    public Post likeComment(Long postId, Long commentId, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a likeComment request.");
         actionHelper.authenticate(authentication);
@@ -291,14 +297,14 @@ public class PostService implements IPostService {
             }
         }
         LOG.debug("Comment could not be liked.");
-        return null;
+        throw new ServerException("Comment could not be liked.");
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public Post unlikeComment(Long postId, Long commentId, Authentication authentication) {
+    public Post unlikeComment(Long postId, Long commentId, Authentication authentication) throws ServerException {
 
         LOG.debug("Received an unlikeComment request.");
         actionHelper.authenticate(authentication);
@@ -316,6 +322,6 @@ public class PostService implements IPostService {
             }
         }
         LOG.debug("Like could not be removed from the comment.");
-        return null;
+        throw new ServerException("Like could not be removed from the comment.");
     }
 }

@@ -1,5 +1,6 @@
 package com.ravekidd.service.services;
 
+import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.User;
 import com.ravekidd.model.auth.AuthResponse;
 import com.ravekidd.security.token.JWTProvider;
@@ -133,7 +134,7 @@ public class UserService implements IUserService {
 
         } catch (Exception e) {
             LOG.debug("Failed to change username for user: {} ,", authentication.getName(), e);
-            throw new RuntimeException("Failed to change username. ", e);
+            throw new RuntimeException("Failed to change username for user: " + authentication.getName(), e);
         }
     }
 

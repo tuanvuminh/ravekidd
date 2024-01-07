@@ -1,5 +1,6 @@
 package com.ravekidd.controller.graphQL;
 
+import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.Post;
 import com.ravekidd.model.PostComment;
 import com.ravekidd.service.interfaces.IPostService;
@@ -75,7 +76,7 @@ public class PostController {
      * @return The post with the updated content.
      */
     @MutationMapping
-    public Post updatePost(@Valid @Argument Post post, Authentication authentication) {
+    public Post updatePost(@Valid @Argument Post post, Authentication authentication) throws ServerException {
         return service.updatePost(post, authentication);
     }
 
@@ -89,7 +90,7 @@ public class PostController {
     @MutationMapping
     public Post deletePost(@Min(value = 1, message = "ID must be at least 1.")
                            @NotNull(message = "ID cannot be null.") @Argument Long postId,
-                           Authentication authentication) {
+                           Authentication authentication) throws ServerException {
 
         return service.deletePost(postId, authentication);
     }
@@ -104,7 +105,7 @@ public class PostController {
     @MutationMapping
     public Post likePost(@Min(value = 1, message = "ID must be at least 1.")
                          @NotNull(message = "ID cannot be null.") @Argument Long postId,
-                         Authentication authentication) {
+                         Authentication authentication) throws ServerException {
 
         return service.likePost(postId, authentication);
     }
@@ -119,7 +120,7 @@ public class PostController {
     @MutationMapping
     public Post unlikePost(@Min(value = 1, message = "ID must be at least 1.")
                            @NotNull(message = "ID cannot be null.") @Argument Long postId,
-                           Authentication authentication) {
+                           Authentication authentication) throws ServerException {
 
         return service.unlikePost(postId, authentication);
     }
@@ -149,7 +150,8 @@ public class PostController {
     @MutationMapping
     public Post updateComment(@Min(value = 1, message = "ID must be at least 1.")
                               @NotNull(message = "ID cannot be null.") @Argument Long postId,
-                              @Valid @Argument PostComment comment, Authentication authentication) {
+                              @Valid @Argument PostComment comment, Authentication authentication)
+            throws ServerException {
 
         return service.updateComment(postId, comment, authentication);
     }
@@ -166,7 +168,7 @@ public class PostController {
                               @NotNull(message = "ID cannot be null.") @Argument Long postId,
                               @Min(value = 1, message = "ID must be at least 1.")
                               @NotNull(message = "ID cannot be null.") @Argument Long commentId,
-                              Authentication authentication) {
+                              Authentication authentication) throws ServerException {
 
         return service.deleteComment(postId, commentId, authentication);
     }
@@ -184,7 +186,7 @@ public class PostController {
                             @NotNull(message = "ID cannot be null.") @Argument Long postId,
                             @Min(value = 1, message = "ID must be at least 1.")
                             @NotNull(message = "ID cannot be null.") @Argument Long commentId,
-                            Authentication authentication) {
+                            Authentication authentication) throws ServerException {
 
         return service.likeComment(postId, commentId, authentication);
     }
@@ -202,7 +204,7 @@ public class PostController {
                               @NotNull(message = "ID cannot be null.") @Argument Long postId,
                               @Min(value = 1, message = "ID must be at least 1.")
                               @NotNull(message = "ID cannot be null.") @Argument Long commentId,
-                              Authentication authentication) {
+                              Authentication authentication) throws ServerException {
 
         return service.unlikeComment(postId, commentId, authentication);
     }
