@@ -8,7 +8,6 @@ import com.ravekidd.service.helpers.InputHelper;
 import com.ravekidd.service.interfaces.IPostService;
 import com.ravekidd.service.repositories.PostRepository;
 import com.ravekidd.service.repositories.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static com.ravekidd.consts.Constants.*;
-import static com.ravekidd.consts.Messages.*;
 
 /**
  * Service class for managing posts and related actions.
@@ -73,23 +71,15 @@ public class PostService implements IPostService {
         switch (query) {
 
             case QUERY_POST_ID -> {
-                LOG.debug("Finding post by id {}...", parameter);
-                posts = postRepository.findById(Long.parseLong(parameter));
-
-                if (posts.isEmpty()) {
-                    LOG.debug(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(Long.parseLong(parameter)));
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(Long.parseLong(parameter)));
-                }
+                String[] ids = parameter.split(", ");
+                LOG.debug("Finding posts by ids: {}...", Arrays.toString(ids));
+                posts = actionHelper.getPostsByIds(ids, postRepository);
                 return posts;
             }
             case QUERY_POST_USER -> {
-                LOG.debug("Finding post by userId {}...", parameter);
-                posts = postRepository.findByUserId(Long.parseLong(parameter));
-
-                if (posts.isEmpty()) {
-                    LOG.debug(UNSUCCESSFUL_FIND_POST_BY_USER_ID.get().formatted(Long.parseLong(parameter)));
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_USER_ID.get().formatted(Long.parseLong(parameter)));
-                }
+                String[] ids = parameter.split(", ");
+                LOG.debug("Finding posts by userIds: {}...", Arrays.toString(ids));
+                posts = actionHelper.getPostsByUserIds(ids, postRepository);
                 return posts;
             }
             case QUERY_POST_DATE -> {
@@ -99,22 +89,12 @@ public class PostService implements IPostService {
                 LocalDateTime dateTo = inputHelper.transformStringToDateTime(dates[1]);
 
                 LOG.debug("Finding posts between dates {} and {}...", dateFrom, dateTo);
-                posts = postRepository.findByDateBetween(dateFrom, dateTo);
-
-                if (posts.isEmpty()) {
-                    LOG.debug(UNSUCCESSFUL_FIND_POST_BETWEEN_DATES.get().formatted(dateFrom.toString(), dateTo.toString()));
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BETWEEN_DATES.get().formatted(dateFrom.toString(), dateTo.toString()));
-                }
+                posts = actionHelper.getPostsByDates(dateFrom, dateTo, postRepository);
                 return posts;
             }
             default -> {
                 LOG.debug("Retrieving all posts...");
                 posts = postRepository.findAll();
-
-                if (posts.isEmpty()) {
-                    LOG.debug(UNSUCCESSFUL_FIND_POSTS.get().formatted(parameter));
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POSTS.get().formatted(parameter));
-                }
                 return posts;
             }
         }
@@ -127,8 +107,8 @@ public class PostService implements IPostService {
     public Post createPost(Post post, Authentication authentication) {
 
         LOG.debug("Received a createPost request.");
-        inputHelper.initInputPost(post);
         actionHelper.authenticate(authentication);
+        inputHelper.initInputPost(post);
 
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
         post.setUser(user);
@@ -228,8 +208,8 @@ public class PostService implements IPostService {
     public Post addComment(Long postId, PostComment inputComment, Authentication authentication) {
 
         LOG.debug("Received an addComment request.");
-        inputHelper.initInputPostComment(inputComment);
         actionHelper.authenticate(authentication);
+        inputHelper.initInputPostComment(inputComment);
 
         Post post = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
@@ -245,8 +225,8 @@ public class PostService implements IPostService {
     public Post updateComment(Long postId, PostComment inputComment, Authentication authentication) {
 
         LOG.debug("Received an updateComment request.");
-        inputHelper.initInputPostComment(inputComment);
         actionHelper.authenticate(authentication);
+        inputHelper.initInputPostComment(inputComment);
 
         Post post = actionHelper.findPost(postId, postRepository);
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);

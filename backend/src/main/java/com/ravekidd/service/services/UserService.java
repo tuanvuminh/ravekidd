@@ -7,7 +7,6 @@ import com.ravekidd.service.helpers.ActionHelper;
 import com.ravekidd.service.helpers.InputHelper;
 import com.ravekidd.service.interfaces.IUserService;
 import com.ravekidd.service.repositories.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.ravekidd.consts.Constants.*;
@@ -71,33 +71,20 @@ public class UserService implements IUserService {
         switch (query) {
 
             case QUERY_USER_ID -> {
-                LOG.debug("Finding user by id {}...", parameter);
-                users = userRepository.findUserById(Long.parseLong(parameter));
-
-                if (users.isEmpty()) {
-                    LOG.debug(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(Long.parseLong(parameter)));
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(Long.parseLong(parameter)));
-                }
+                String[] ids = parameter.split(", ");
+                LOG.debug("Finding users by ids: {}...", Arrays.toString(ids));
+                users = actionHelper.getUsersByIds(ids, userRepository);
                 return users;
             }
             case QUERY_USER_USERNAME -> {
-                LOG.debug("Finding user by username {}...", parameter);
-                users = userRepository.findUserByUsername(parameter);
-
-                if (users.isEmpty()) {
-                    LOG.debug(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(parameter));
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(parameter));
-                }
+                String[] usernames = parameter.split(", ");
+                LOG.debug("Finding users by usernames: {}...", Arrays.toString(usernames));
+                users = actionHelper.getUsersByUsernames(usernames, userRepository);
                 return users;
             }
             default -> {
                 LOG.debug("Retrieving all users...");
                 users = userRepository.findAll();
-
-                if (users.isEmpty()) {
-                    LOG.debug(UNSUCCESSFUL_FIND_USERS.get());
-                    throw new EntityNotFoundException(UNSUCCESSFUL_FIND_USERS.get());
-                }
                 return users;
             }
         }
@@ -145,7 +132,7 @@ public class UserService implements IUserService {
             return response;
 
         } catch (Exception e) {
-            LOG.debug("Failed to change username for user: {} ", authentication.getName(), e);
+            LOG.debug("Failed to change username for user: {} ,", authentication.getName(), e);
             throw new RuntimeException("Failed to change username. ", e);
         }
     }
