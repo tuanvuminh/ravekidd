@@ -17,7 +17,7 @@ public interface IPostService {
      *
      * @return List of posts matching the criteria.
      */
-    List<Post> getPosts(String query, String parameter, Authentication authentication);
+    List<Post> getPosts(String query, String parameter, Authentication authentication) throws ServerException;
 
     /**
      * Creates a new post with the given description and link.
@@ -26,7 +26,7 @@ public interface IPostService {
      * @param authentication Authentication of the user.
      * @return The created post.
      */
-    Post createPost(Post post, Authentication authentication);
+    Post createPost(Post post, Authentication authentication) throws ServerException;
 
     /**
      * Updates an existing post with the provided details.
@@ -71,7 +71,7 @@ public interface IPostService {
      * @param authentication Authentication of the user.
      * @return The post with added comment.
      */
-    Post addComment(Long postId, PostComment comment, Authentication authentication);
+    Post addComment(Long postId, PostComment comment, Authentication authentication) throws ServerException;
 
     /**
      * Updates a comment on a post.

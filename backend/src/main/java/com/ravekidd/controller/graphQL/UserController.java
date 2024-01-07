@@ -1,5 +1,6 @@
 package com.ravekidd.controller.graphQL;
 
+import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.User;
 import com.ravekidd.model.auth.AuthResponse;
 import com.ravekidd.service.interfaces.IUserService;
@@ -53,7 +54,9 @@ public class UserController {
     public List<User> getUsers(
             @Pattern(regexp = "^(id|username)$", message = "Allowed queries: [id, username]")
             @Argument @RequestParam(required = false) String query,
-            @Argument @RequestParam(required = false) String parameter, Authentication authentication) {
+            @Argument @RequestParam(required = false) String parameter, Authentication authentication)
+            throws ServerException {
+
         return service.getUsers(query, parameter, authentication);
     }
 
@@ -68,7 +71,8 @@ public class UserController {
     @Secured(ROLE_ADMIN)
     public User deleteUser(@Min(value = 1, message = "ID must be at least 1.")
                            @NotNull(message = "ID cannot be null.")
-                           @Argument Long id, Authentication authentication) {
+                           @Argument Long id, Authentication authentication) throws ServerException {
+
         return service.deleteUser(id, authentication);
     }
 
@@ -81,7 +85,8 @@ public class UserController {
      */
     @MutationMapping
     public AuthResponse changeUsername(@Argument @NotBlank(message = "Username cannot be blank.") String newUsername,
-                                       Authentication authentication) {
+                                       Authentication authentication) throws ServerException {
+
         return service.changeUsername(newUsername, authentication);
     }
 
@@ -94,7 +99,8 @@ public class UserController {
      */
     @MutationMapping
     public User changeImage(@Pattern(regexp = ".*\\.(jpg|jpeg|png)$", message = "Allowed formats: [jpg, jpeg, png]")
-                            @Argument String newImage, Authentication authentication) {
+                            @Argument String newImage, Authentication authentication) throws ServerException {
+
         return service.changeImage(newImage, authentication);
     }
 }

@@ -1,5 +1,6 @@
 package com.ravekidd.service.services;
 
+import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.Role;
 import com.ravekidd.model.User;
 import com.ravekidd.service.helpers.ActionHelper;
@@ -46,12 +47,15 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = actionHelper.findUserByUsername(username, userRepository);
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+
+        try {
+            User user = actionHelper.findUserByUsername(username, userRepository);
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        } catch (ServerException e) {
+            throw new RuntimeException(e);
+        }
     }
-
-
 
     /**
      * Maps a list of Role objects to a list of GrantedAuthority objects.

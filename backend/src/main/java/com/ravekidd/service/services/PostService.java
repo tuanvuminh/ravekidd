@@ -58,7 +58,7 @@ public class PostService implements IPostService {
      * @inheritDoc
      */
     @Override
-    public List<Post> getPosts(String query, String parameter, Authentication authentication) {
+    public List<Post> getPosts(String query, String parameter, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a getPosts request.");
         actionHelper.authenticate(authentication);
@@ -105,17 +105,23 @@ public class PostService implements IPostService {
      * @inheritDoc
      */
     @Override
-    public Post createPost(Post post, Authentication authentication) {
+    public Post createPost(Post post, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a createPost request.");
         actionHelper.authenticate(authentication);
         inputHelper.initInputPost(post);
 
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        post.setUser(user);
+        try {
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+            post.setUser(user);
 
-        LOG.debug("Post was created.");
-        return postRepository.save(post);
+            LOG.debug("Post was created.");
+            return postRepository.save(post);
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
+        }
     }
 
     /**
@@ -127,16 +133,21 @@ public class PostService implements IPostService {
         LOG.debug("Received an updatePost request.");
         actionHelper.authenticate(authentication);
 
-        Post post = actionHelper.findPost(updatedPost.getId(), postRepository);
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+        try {
+            Post post = actionHelper.findPost(updatedPost.getId(), postRepository);
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
-        if (post.getUser().getId().equals(user.getId())) {
-            inputHelper.patchPost(post, updatedPost);
-            LOG.debug("Post was successfully updated by '{}'.", authentication.getName());
-            return postRepository.save(post);
+            if (post.getUser().getId().equals(user.getId())) {
+                inputHelper.patchPost(post, updatedPost);
+                LOG.debug("Post was successfully updated by '{}'.", authentication.getName());
+                return postRepository.save(post);
+            }
+            throw new ServerException("Post could not be updated. Invalid parameters.");
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
         }
-        LOG.debug("Post could not be updated.");
-        throw new ServerException("Post could not be updated.");
     }
 
     /**
@@ -148,16 +159,21 @@ public class PostService implements IPostService {
         LOG.debug("Received a deletePost request.");
         actionHelper.authenticate(authentication);
 
-        Post post = actionHelper.findPost(postId, postRepository);
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+        try {
+            Post post = actionHelper.findPost(postId, postRepository);
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
-        if (post.getUser().getId().equals(user.getId())) {
-            postRepository.delete(post);
-            LOG.debug("Post was deleted.");
-            return post;
+            if (post.getUser().getId().equals(user.getId())) {
+                postRepository.delete(post);
+                LOG.debug("Post was deleted.");
+                return post;
+            }
+            throw new ServerException("Post could not be deleted. Invalid parameters.");
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
         }
-        LOG.debug("Post could not be deleted.");
-        throw new ServerException("Post could not be deleted.");
     }
 
     /**
@@ -169,17 +185,21 @@ public class PostService implements IPostService {
         LOG.debug("Received a likePost request.");
         actionHelper.authenticate(authentication);
 
-        Post post = actionHelper.findPost(postId, postRepository);
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+        try {
+            Post post = actionHelper.findPost(postId, postRepository);
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
-        if (!post.getLikes().contains(user)) {
-            post.addLike(user);
-            LOG.debug("Post was liked by '{}'.", authentication.getName());
-            return postRepository.save(post);
+            if (!post.getLikes().contains(user)) {
+                post.addLike(user);
+                LOG.debug("Post was liked by '{}'.", authentication.getName());
+                return postRepository.save(post);
+            }
+            throw new ServerException("Like could not be added to post. Invalid parameters.");
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
         }
-        LOG.debug("Post could not be liked.");
-        throw new ServerException("Post could not be liked.");
-
     }
 
     /**
@@ -191,36 +211,47 @@ public class PostService implements IPostService {
         LOG.debug("Received an unlikePost request.");
         actionHelper.authenticate(authentication);
 
-        Post post = actionHelper.findPost(postId, postRepository);
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+        try {
+            Post post = actionHelper.findPost(postId, postRepository);
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
-        if (post.getLikes().contains(user)) {
-            post.removeLike(user);
-            LOG.debug("Like was removed by '{}'.", authentication.getName());
-            return postRepository.save(post);
+            if (post.getLikes().contains(user)) {
+                post.removeLike(user);
+                LOG.debug("Like was removed by '{}'.", authentication.getName());
+                return postRepository.save(post);
+            }
+            throw new ServerException("Like could not be removed from post. Invalid parameters.");
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
         }
-        LOG.debug("Like could not be removed from the post.");
-        throw new ServerException("Like could not be removed from the post.");
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public Post addComment(Long postId, PostComment inputComment, Authentication authentication) {
+    public Post addComment(Long postId, PostComment inputComment, Authentication authentication) throws ServerException {
 
         LOG.debug("Received an addComment request.");
         actionHelper.authenticate(authentication);
         inputHelper.initInputPostComment(inputComment);
 
-        Post post = actionHelper.findPost(postId, postRepository);
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+        try {
+            Post post = actionHelper.findPost(postId, postRepository);
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
-        PostComment comment = new PostComment(post, user, inputComment.getContent(), inputComment.getDate());
-        post.addComment(comment);
+            PostComment comment = new PostComment(post, user, inputComment.getContent(), inputComment.getDate());
+            post.addComment(comment);
 
-        LOG.debug("Post was commented by '{}'.", authentication.getName());
-        return postRepository.save(post);
+            LOG.debug("Post was commented by '{}'.", authentication.getName());
+            return postRepository.save(post);
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
+        }
     }
 
     @Override
@@ -231,20 +262,24 @@ public class PostService implements IPostService {
         actionHelper.authenticate(authentication);
         inputHelper.initInputPostComment(inputComment);
 
-        Post post = actionHelper.findPost(postId, postRepository);
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+        try {
+            Post post = actionHelper.findPost(postId, postRepository);
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
-        for (PostComment comment : post.getComments()) {
+            for (PostComment comment : post.getComments()) {
 
-            if (comment.getId().equals(inputComment.getId()) && comment.getUser().getId().equals(user.getId())) {
-
-                comment.setContent(inputComment.getContent());
-                LOG.debug("Comment was updated by '{}'.", authentication.getName());
-                return postRepository.save(post);
+                if (comment.getId().equals(inputComment.getId()) && comment.getUser().getId().equals(user.getId())) {
+                    comment.setContent(inputComment.getContent());
+                    LOG.debug("Comment was updated by '{}'.", authentication.getName());
+                    return postRepository.save(post);
+                }
             }
+            throw new ServerException("Comment could not be updated. Invalid parameters.");
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
         }
-        LOG.debug("Comment could not be updated.");
-        throw new ServerException("Comment could not be updated.");
     }
 
     /**
@@ -256,20 +291,24 @@ public class PostService implements IPostService {
         LOG.debug("Received a deleteComment request.");
         actionHelper.authenticate(authentication);
 
-        Post post = actionHelper.findPost(postId, postRepository);
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+        try {
+            Post post = actionHelper.findPost(postId, postRepository);
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
-        for (PostComment comment : post.getComments()) {
+            for (PostComment comment : post.getComments()) {
 
-            if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
-
-                post.removeComment(comment);
-                LOG.debug("Comment was deleted by '{}'.", authentication.getName());
-                return postRepository.save(post);
+                if (comment.getId().equals(commentId) && comment.getUser().getId().equals(user.getId())) {
+                    post.removeComment(comment);
+                    LOG.debug("Comment was deleted by '{}'.", authentication.getName());
+                    return postRepository.save(post);
+                }
             }
+            throw new ServerException("Comment could not be deleted. Invalid parameters.");
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
         }
-        LOG.debug("Comment could not be deleted.");
-        throw new ServerException("Comment could not be deleted.");
     }
 
     /**
@@ -281,20 +320,24 @@ public class PostService implements IPostService {
         LOG.debug("Received a likeComment request.");
         actionHelper.authenticate(authentication);
 
-        Post post = actionHelper.findPost(postId, postRepository);
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+        try {
+            Post post = actionHelper.findPost(postId, postRepository);
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
-        for (PostComment comment : post.getComments()) {
+            for (PostComment comment : post.getComments()) {
 
-            if (comment.getId().equals(commentId) && !comment.getLikes().contains(user)) {
-
-                comment.addLike(user);
-                LOG.debug("Comment was liked by '{}'.", authentication.getName());
-                return postRepository.save(post);
+                if (comment.getId().equals(commentId) && !comment.getLikes().contains(user)) {
+                    comment.addLike(user);
+                    LOG.debug("Comment was liked by '{}'.", authentication.getName());
+                    return postRepository.save(post);
+                }
             }
+            throw new ServerException("Like could not be added to comment. Invalid parameters.");
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
         }
-        LOG.debug("Comment could not be liked.");
-        throw new ServerException("Comment could not be liked.");
     }
 
     /**
@@ -306,19 +349,23 @@ public class PostService implements IPostService {
         LOG.debug("Received an unlikeComment request.");
         actionHelper.authenticate(authentication);
 
-        Post post = actionHelper.findPost(postId, postRepository);
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+        try {
+            Post post = actionHelper.findPost(postId, postRepository);
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
-        for (PostComment comment : post.getComments()) {
+            for (PostComment comment : post.getComments()) {
 
-            if (comment.getId().equals(commentId) && comment.getLikes().contains(user)) {
-
-                comment.removeLike(user);
-                LOG.debug("Like was removed by '{}'.", authentication.getName());
-                return postRepository.save(post);
+                if (comment.getId().equals(commentId) && comment.getLikes().contains(user)) {
+                    comment.removeLike(user);
+                    LOG.debug("Like was removed by '{}'.", authentication.getName());
+                    return postRepository.save(post);
+                }
             }
+            throw new ServerException("Like could not be removed from comment. Invalid parameters.");
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
         }
-        LOG.debug("Like could not be removed from the comment.");
-        throw new ServerException("Like could not be removed from the comment.");
     }
 }

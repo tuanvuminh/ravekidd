@@ -58,7 +58,7 @@ public class UserService implements IUserService {
      * @inheritDoc
      */
     @Override
-    public List<User> getUsers(String query, String parameter, Authentication authentication) {
+    public List<User> getUsers(String query, String parameter, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a getUsers request.");
         actionHelper.authenticate(authentication);
@@ -95,24 +95,30 @@ public class UserService implements IUserService {
      * @inheritDoc
      */
     @Override
-    public User deleteUser(Long id, Authentication authentication) {
+    public User deleteUser(Long id, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a deleteUser request.");
         actionHelper.authenticate(authentication);
 
-        User user = actionHelper.findUserById(id, userRepository);
-        user.getRoles().clear();
-        userRepository.delete(user);
+        try {
+            User user = actionHelper.findUserById(id, userRepository);
+            user.getRoles().clear();
+            userRepository.delete(user);
 
-        LOG.debug("User `{}` has been deleted.", user.getUsername());
-        return user;
+            LOG.debug("User `{}` has been deleted.", user.getUsername());
+            return user;
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
+        }
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public AuthResponse changeUsername(String newUsername, Authentication authentication) {
+    public AuthResponse changeUsername(String newUsername, Authentication authentication) throws ServerException {
 
         LOG.debug("Received an changeUsername request.");
         actionHelper.authenticate(authentication);
@@ -132,9 +138,9 @@ public class UserService implements IUserService {
             response.setAccessToken(newToken);
             return response;
 
-        } catch (Exception e) {
-            LOG.debug("Failed to change username for user: {} ,", authentication.getName(), e);
-            throw new RuntimeException("Failed to change username for user: " + authentication.getName(), e);
+        } catch (ServerException exception) {
+            LOG.debug("Failed to change username for user: {} ,", authentication.getName(), exception);
+            throw exception;
         }
     }
 
@@ -142,15 +148,21 @@ public class UserService implements IUserService {
      * @inheritDoc
      */
     @Override
-    public User changeImage(String newImage, Authentication authentication) {
+    public User changeImage(String newImage, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a changeImage request.");
         actionHelper.authenticate(authentication);
 
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        user.setImage(newImage);
+        try {
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+            user.setImage(newImage);
 
-        LOG.debug("Image was changed.");
-        return userRepository.save(user);
+            LOG.debug("Image was changed.");
+            return userRepository.save(user);
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
+        }
     }
 }

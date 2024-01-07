@@ -1,5 +1,6 @@
 package com.ravekidd.service.interfaces;
 
+import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.User;
 import com.ravekidd.model.auth.AuthResponse;
 import org.springframework.security.core.Authentication;
@@ -16,7 +17,7 @@ public interface IUserService {
      *
      * @return A list of users matching the criteria.
      */
-    List<User> getUsers(String query, String param, Authentication authentication);
+    List<User> getUsers(String query, String param, Authentication authentication) throws ServerException;
 
     /**
      * Deletes a user with the given ID.
@@ -24,7 +25,7 @@ public interface IUserService {
      * @param id ID of the user to be deleted.
      * @return The deleted UserEntity object.
      */
-    User deleteUser(Long id, Authentication authentication);
+    User deleteUser(Long id, Authentication authentication) throws ServerException;
 
     /**
      * Changes the username of the authenticated user.
@@ -33,7 +34,7 @@ public interface IUserService {
      * @param authentication Authentication of the user.
      * @return Authentication response containing a new bearer token.
      */
-    AuthResponse changeUsername(String newUsername, Authentication authentication);
+    AuthResponse changeUsername(String newUsername, Authentication authentication) throws ServerException;
 
     /**
      * Change the image of a user.
@@ -42,5 +43,5 @@ public interface IUserService {
      * @param authentication Authentication of the user.
      * @return The updated user.
      */
-    User changeImage(String newImage, Authentication authentication);
+    User changeImage(String newImage, Authentication authentication) throws ServerException;
 }

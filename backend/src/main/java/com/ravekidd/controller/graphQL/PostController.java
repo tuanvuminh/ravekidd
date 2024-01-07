@@ -51,7 +51,7 @@ public class PostController {
     public List<Post> getPosts(@Pattern(regexp = "^(id|user|date)$", message = "Allowed queries: [id, user, date]")
                                @Argument @RequestParam(required = false) String query,
                                @Argument @RequestParam(required = false) String parameter,
-                               Authentication authentication) {
+                               Authentication authentication) throws ServerException {
 
         return service.getPosts(query, parameter, authentication);
     }
@@ -64,7 +64,7 @@ public class PostController {
      * @return The newly created post.
      */
     @MutationMapping
-    public Post createPost(@Valid @Argument Post post, Authentication authentication) {
+    public Post createPost(@Valid @Argument Post post, Authentication authentication) throws ServerException {
         return service.createPost(post, authentication);
     }
 
@@ -135,7 +135,7 @@ public class PostController {
     @MutationMapping
     public Post addComment(@Min(value = 1, message = "ID must be at least 1.")
                            @NotNull(message = "ID cannot be null.") @Argument Long postId,
-                           @Valid @Argument PostComment comment, Authentication authentication) {
+                           @Valid @Argument PostComment comment, Authentication authentication) throws ServerException {
 
         return service.addComment(postId, comment, authentication);
     }

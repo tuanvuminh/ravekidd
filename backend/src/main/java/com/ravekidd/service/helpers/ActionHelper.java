@@ -1,5 +1,6 @@
 package com.ravekidd.service.helpers;
 
+import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.Post;
 import com.ravekidd.model.User;
 import com.ravekidd.service.repositories.PostRepository;
@@ -31,10 +32,9 @@ public class ActionHelper {
      * @param authentication The authentication object.
      * @throws SecurityException if the user is not authenticated.
      */
-    public void authenticate(Authentication authentication) {
+    public void authenticate(Authentication authentication) throws ServerException {
         if (authentication == null || !authentication.isAuthenticated()) {
-            LOG.debug(UNSUCCESSFUL_AUTHENTICATION.get());
-            throw new SecurityException(UNSUCCESSFUL_AUTHENTICATION.get());
+            throw new ServerException(UNSUCCESSFUL_AUTHENTICATION.get());
         }
     }
 
@@ -46,13 +46,9 @@ public class ActionHelper {
      * @return The founded user.
      * @throws EntityNotFoundException if the user is not found.
      */
-    public User findUserByUsername(String username, UserRepository userRepository) {
-
-        return userRepository.findByUsername(username).orElseThrow(() -> {
-                    LOG.debug(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(username));
-                    return new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(username));
-                }
-        );
+    public User findUserByUsername(String username, UserRepository userRepository) throws ServerException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ServerException(UNSUCCESSFUL_FIND_USER_BY_USERNAME.get().formatted(username)));
     }
 
     /**
@@ -63,13 +59,9 @@ public class ActionHelper {
      * @return The founded user.
      * @throws EntityNotFoundException if the user is not found.
      */
-    public User findUserById(Long id, UserRepository userRepository) {
-
-        return userRepository.findById(id).orElseThrow(() -> {
-                    LOG.debug(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(id));
-                    return new EntityNotFoundException(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(id));
-                }
-        );
+    public User findUserById(Long id, UserRepository userRepository) throws ServerException {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ServerException(UNSUCCESSFUL_FIND_USER_BY_ID.get().formatted(id)));
     }
 
     /**
@@ -80,13 +72,9 @@ public class ActionHelper {
      * @return The found post.
      * @throws EntityNotFoundException if the post is not found.
      */
-    public Post findPost(Long postId, PostRepository postRepository) {
-
-        return postRepository.findById(postId).orElseThrow(() -> {
-                    LOG.debug(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId));
-                    return new EntityNotFoundException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId));
-                }
-        );
+    public Post findPost(Long postId, PostRepository postRepository) throws ServerException {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new ServerException(UNSUCCESSFUL_FIND_POST_BY_ID.get().formatted(postId)));
     }
 
     /**
@@ -97,14 +85,14 @@ public class ActionHelper {
      * @return The list of found posts.
      * @throws EntityNotFoundException if no posts are found for the given ID.
      */
-    public List<Post> getPostsByIds(String[] ids, PostRepository postRepository) {
+    public List<Post> getPostsByIds(String[] ids, PostRepository postRepository) throws ServerException {
 
         List<Long> postIds = Arrays.stream(ids).map(Long::parseLong).collect(Collectors.toList());
         List<Post> posts = postRepository.findAllById(postIds);
 
         if (posts == null || posts.isEmpty()) {
             LOG.debug(UNSUCCESSFUL_FIND_POSTS_BY_IDS.get(), postIds);
-            throw new EntityNotFoundException("No posts found for the provided IDs: " + Arrays.toString(ids));
+            throw new ServerException("No posts found for the provided IDs: " + Arrays.toString(ids));
         }
         return posts;
     }
@@ -117,14 +105,14 @@ public class ActionHelper {
      * @return The list of found posts.
      * @throws EntityNotFoundException if no posts are found for the given user ID.
      */
-    public List<Post> getPostsByUserIds(String[] ids, PostRepository postRepository) {
+    public List<Post> getPostsByUserIds(String[] ids, PostRepository postRepository) throws ServerException {
 
         List<Long> userIds = Arrays.stream(ids).map(Long::parseLong).collect(Collectors.toList());
         List<Post> posts = postRepository.findByUserIdIn(userIds);
 
         if (posts == null || posts.isEmpty()) {
             LOG.debug(UNSUCCESSFUL_FIND_POSTS_BY_USER_IDS.get(), userIds);
-            throw new EntityNotFoundException("No posts found for the provided user IDs: " + Arrays.toString(ids));
+            throw new ServerException("No posts found for the provided user IDs: " + Arrays.toString(ids));
         }
         return posts;
     }
@@ -138,13 +126,13 @@ public class ActionHelper {
      * @return The list of found posts.
      * @throws EntityNotFoundException if no posts are found within the specified date range.
      */
-    public List<Post> getPostsByDates(LocalDateTime dateFrom, LocalDateTime dateTo, PostRepository postRepository) {
+    public List<Post> getPostsByDates(LocalDateTime dateFrom, LocalDateTime dateTo, PostRepository postRepository) throws ServerException {
 
         List<Post> posts = postRepository.findByDateBetween(dateFrom, dateTo);
 
         if (posts == null || posts.isEmpty()) {
             LOG.debug(UNSUCCESSFUL_FIND_POSTS_BETWEEN_DATES.get().formatted(dateFrom.toString(), dateTo.toString()));
-            throw new EntityNotFoundException(UNSUCCESSFUL_FIND_POSTS_BETWEEN_DATES.get().formatted(dateFrom.toString(), dateTo.toString()));
+            throw new ServerException(UNSUCCESSFUL_FIND_POSTS_BETWEEN_DATES.get().formatted(dateFrom.toString(), dateTo.toString()));
         }
         return posts;
     }
@@ -157,14 +145,14 @@ public class ActionHelper {
      * @return The list of found users.
      * @throws EntityNotFoundException if no users are found for the given ID.
      */
-    public List<User> getUsersByIds(String[] ids, UserRepository userRepository) {
+    public List<User> getUsersByIds(String[] ids, UserRepository userRepository) throws ServerException {
 
         List<Long> userIds = Arrays.stream(ids).map(Long::parseLong).collect(Collectors.toList());
         List<User> users = userRepository.findAllById(userIds);
 
         if (users == null || users.isEmpty()) {
             LOG.debug(UNSUCCESSFUL_FIND_USERS_BY_IDS.get(), userIds);
-            throw new EntityNotFoundException("No users found for the provided IDs: " + Arrays.toString(ids));
+            throw new ServerException("No users found for the provided IDs: " + Arrays.toString(ids));
         }
         return users;
     }
@@ -177,13 +165,13 @@ public class ActionHelper {
      * @return The list of found users.
      * @throws EntityNotFoundException if no users are found for the given username.
      */
-    public List<User> getUsersByUsernames(String[] usernames, UserRepository userRepository) {
+    public List<User> getUsersByUsernames(String[] usernames, UserRepository userRepository) throws ServerException {
 
         List<User> users = userRepository.findByUsernameIn(Arrays.asList(usernames));
 
         if (users == null || users.isEmpty()) {
             LOG.debug(UNSUCCESSFUL_FIND_USERS_BY_USERNAMES.get(), Arrays.toString(usernames));
-            throw new EntityNotFoundException("No users found for the provided usernames: " + Arrays.toString(usernames));
+            throw new ServerException("No users found for the provided usernames: " + Arrays.toString(usernames));
         }
         return users;
     }
