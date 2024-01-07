@@ -131,9 +131,11 @@ public class PostService implements IPostService {
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
         if (post.getUser().getId().equals(user.getId())) {
+
             inputHelper.patchPost(post, updatedPost);
             LOG.debug("Post was successfully updated by '{}'.", authentication.getName());
             return postRepository.save(post);
+
         } else {
             LOG.debug("Post could not be updated.");
             throw new ServerException("Post could not be updated.");
@@ -153,9 +155,11 @@ public class PostService implements IPostService {
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
         if (post.getUser().getId().equals(user.getId())) {
+
             postRepository.delete(post);
             LOG.debug("Post was deleted.");
             return post;
+
         } else {
             LOG.debug("Post could not be deleted.");
             throw new ServerException("Post could not be deleted.");
@@ -175,9 +179,11 @@ public class PostService implements IPostService {
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
         if (!post.getLikes().contains(user)) {
+
             post.addLike(user);
             LOG.debug("Post was liked by '{}'.", authentication.getName());
             return postRepository.save(post);
+
         } else {
             LOG.debug("Post could not be liked.");
             throw new ServerException("Post could not be liked.");
@@ -197,9 +203,11 @@ public class PostService implements IPostService {
         User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
 
         if (post.getLikes().contains(user)) {
+
             post.removeLike(user);
             LOG.debug("Like was removed by '{}'.", authentication.getName());
             return postRepository.save(post);
+
         } else {
             LOG.debug("Like could not be removed from the post.");
             throw new ServerException("Like could not be removed from the post.");
