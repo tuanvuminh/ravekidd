@@ -2,7 +2,7 @@ package com.ravekidd.service.services;
 
 import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.User;
-import com.ravekidd.model.auth.AuthResponse;
+import com.ravekidd.model.auth.AuthenticationResponse;
 import com.ravekidd.security.token.JWTProvider;
 import com.ravekidd.service.helpers.ActionHelper;
 import com.ravekidd.service.helpers.InputHelper;
@@ -118,11 +118,11 @@ public class UserService implements IUserService {
      * @inheritDoc
      */
     @Override
-    public AuthResponse changeUsername(String newUsername, Authentication authentication) throws ServerException {
+    public AuthenticationResponse changeUsername(String newUsername, Authentication authentication) throws ServerException {
 
         LOG.debug("Received an changeUsername request.");
         actionHelper.authenticate(authentication);
-        AuthResponse response = new AuthResponse();
+        AuthenticationResponse response = new AuthenticationResponse();
 
         try {
             User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);

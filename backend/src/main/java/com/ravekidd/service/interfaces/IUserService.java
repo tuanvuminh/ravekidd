@@ -2,7 +2,7 @@ package com.ravekidd.service.interfaces;
 
 import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.User;
-import com.ravekidd.model.auth.AuthResponse;
+import com.ravekidd.model.auth.AuthenticationResponse;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public interface IUserService {
      * @param authentication Authentication of the user.
      * @return Authentication response containing a new bearer token.
      */
-    AuthResponse changeUsername(String newUsername, Authentication authentication) throws ServerException;
+    AuthenticationResponse changeUsername(String newUsername, Authentication authentication) throws ServerException;
 
     /**
      * Change the image of a user.

@@ -1,4 +1,4 @@
-type AuthResponse {
+type AuthenticationResponse {
     message: String
     accessToken: String
 }

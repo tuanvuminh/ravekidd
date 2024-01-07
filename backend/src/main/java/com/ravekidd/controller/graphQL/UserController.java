@@ -2,7 +2,7 @@ package com.ravekidd.controller.graphQL;
 
 import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.User;
-import com.ravekidd.model.auth.AuthResponse;
+import com.ravekidd.model.auth.AuthenticationResponse;
 import com.ravekidd.service.interfaces.IUserService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -84,8 +84,8 @@ public class UserController {
      * @return AuthResponse indicating the success of the operation.
      */
     @MutationMapping
-    public AuthResponse changeUsername(@Argument @NotBlank(message = "Username cannot be blank.") String newUsername,
-                                       Authentication authentication) throws ServerException {
+    public AuthenticationResponse changeUsername(@Argument @NotBlank(message = "Username cannot be blank.") String newUsername,
+                                                 Authentication authentication) throws ServerException {
 
         return service.changeUsername(newUsername, authentication);
     }

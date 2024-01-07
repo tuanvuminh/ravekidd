@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record AuthRequest(
+public record AuthenticationRequest(
         @NotBlank(message = "Username cannot be blank.")
         String username,
         @NotBlank(message = "Password cannot be blank.")

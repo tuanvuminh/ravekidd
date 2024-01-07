@@ -7,7 +7,7 @@ type Mutation {
     deleteUser(id: ID): User
 
     changeImage(newImage: String): User
-    changeUsername(newUsername: String): AuthResponse
+    changeUsername(newUsername: String): AuthenticationResponse
 
     createPost(post: PostInput): Post
     updatePost(post: PostInput): Post

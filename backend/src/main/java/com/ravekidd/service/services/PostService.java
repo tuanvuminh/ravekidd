@@ -232,7 +232,8 @@ public class PostService implements IPostService {
      * @inheritDoc
      */
     @Override
-    public Post addComment(Long postId, PostComment inputComment, Authentication authentication) throws ServerException {
+    public Post addComment(Long postId, PostComment inputComment, Authentication authentication)
+            throws ServerException {
 
         LOG.debug("Received an addComment request.");
         actionHelper.authenticate(authentication);
