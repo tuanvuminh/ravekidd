@@ -14,8 +14,8 @@ public class OutputHelper {
     /**
      * Transforms a LocalDateTime object to a string in the format "dd.MM.yyyy".
      *
-     * @param dateTime The LocalDateTime object to be transformed
-     * @return A string representation of the LocalDateTime in "dd.MM.yyyy" format
+     * @param dateTime The LocalDateTime object to be transformed.
+     * @return A string representation of the LocalDateTime in "dd.MM.yyyy" format.
      */
     public String transformDateToString(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");

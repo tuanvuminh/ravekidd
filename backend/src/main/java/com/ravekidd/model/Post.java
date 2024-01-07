@@ -1,11 +1,10 @@
 package com.ravekidd.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +23,7 @@ public class Post {
     private User user = null;
 
     @Column(name="DESCRIPTION")
+    @NotBlank(message = "Description cannot be blank.")
     private String description = null;
 
     @Column(name="LINK")

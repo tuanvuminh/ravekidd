@@ -1,5 +1,6 @@
 package com.ravekidd.service.services;
 
+import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.Role;
 import com.ravekidd.model.User;
 import com.ravekidd.service.helpers.ActionHelper;
@@ -40,22 +41,26 @@ public class CustomUserDetailsService implements UserDetailsService {
     /**
      * Loads a user by their username.
      *
-     * @param  username  The username of the user to load
-     * @return           UserDetails object representing the loaded user
-     * @throws UsernameNotFoundException if the user is not found
+     * @param username The username of the user to load.
+     * @return UserDetails object representing the loaded user.
+     * @throws UsernameNotFoundException if the user is not found.
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = actionHelper.findUserByUsername(username, userRepository);
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        try {
+            User user = actionHelper.findUserByUsername(username, userRepository);
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        } catch (ServerException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Maps a list of Role objects to a list of GrantedAuthority objects.
      *
-     * @param  roles  The list of Role objects to be mapped
-     * @return        The list of GrantedAuthority objects mapped from the Role objects
+     * @param roles The list of Role objects to be mapped.
+     * @return The list of GrantedAuthority objects mapped from the Role objects.
      */
     private Collection<GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());

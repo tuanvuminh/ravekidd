@@ -1,10 +1,21 @@
-1. Update methods, like comments
-2. Validations, exceptions, filters, sorting
-3. Design Patterns
-4. Https
-5. Generics
-6. Nested classes
-7. Functional programming
-8. JUnit
-9. SQL scripts
-10. API Gateway
+TODO Update methods----------------------DONE
+TODO SQL scripts-------------------------DONE
+TODO Like comments-----------------------DONE
+TODO Validations-------------------------DONE
+TODO Filters (Date)----------------------DONE
+TODO Exceptions--------------------------DONE
+TODO Bulk queries------------------------DONE
+TODO LOG/Exception messages
+TODO Https
+TODO Async conf and hikari pool
+TODO Decrypt/Encrypt password
+
+TODO Design Patterns
+TODO Generics
+TODO Nested classes
+TODO Functional programming
+TODO API Gateway
+TODO JUnit
+TODO Sorting on frontend
+
+TODO enhance Spring framework

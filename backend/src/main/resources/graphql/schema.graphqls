@@ -1,16 +1,13 @@
 type Query {
     getUsers(query: String, parameter: String): [User]
-    getUserById(id: ID): User
-
-    findPosts(query: String, parameter: String): [Post]
-    findPostById(postId: ID): Post
+    getPosts(query: String, parameter: String): [Post]
 }
 
 type Mutation {
     deleteUser(id: ID): User
 
     changeImage(newImage: String): User
-    changeUsername(newUsername: String): AuthResponse
+    changeUsername(newUsername: String): AuthenticationResponse
 
     createPost(post: PostInput): Post
     updatePost(post: PostInput): Post
@@ -19,8 +16,12 @@ type Mutation {
     likePost(postId: ID): Post
     unlikePost(postId: ID): Post
 
-    addComment(postId: ID, content: String): Post
+    addComment(postId: ID, comment: PostCommentInput): Post
+    updateComment(postId: ID, comment: PostCommentInput): Post
     deleteComment(postId: ID, commentId: ID): Post
+
+    likeComment(postId: ID, commentId: ID): Post
+    unlikeComment(postId: ID, commentId: ID): Post
 }
 
 

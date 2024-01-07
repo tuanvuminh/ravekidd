@@ -4,4 +4,5 @@ type User {
     image: String
     password: String
     posts: [Post]
+    roles: [Role]
 }

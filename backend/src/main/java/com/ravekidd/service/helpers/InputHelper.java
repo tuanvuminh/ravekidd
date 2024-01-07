@@ -1,16 +1,18 @@
 package com.ravekidd.service.helpers;
 
+import com.ravekidd.consts.Constants;
 import com.ravekidd.model.Post;
 import com.ravekidd.model.PostComment;
 import com.ravekidd.model.Role;
 import com.ravekidd.model.User;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Helper class for handling input-related operations.
@@ -21,9 +23,9 @@ public class InputHelper {
     /**
      * Initializes the input parameters, setting them to empty strings if they are null.
      *
-     * @param query     The query string
-     * @param parameter The parameter string
-     * @return An array containing the initialized query and parameter
+     * @param query     The query string.
+     * @param parameter The parameter string.
+     * @return An array containing the initialized query and parameter.
      */
     public String[] initInputQuery(String query, String parameter) {
 
@@ -41,7 +43,7 @@ public class InputHelper {
     /**
      * Initializes the properties of a User object, setting them to default values if they are null.
      *
-     * @param input The User object to initialize
+     * @param input The User object to initialize.
      */
     public void initInputUser(User input) {
 
@@ -54,7 +56,7 @@ public class InputHelper {
         }
 
         if (input.getImage() == null) {
-            input.setImage("");
+            input.setImage("default.jpg");
         }
 
         if (input.getPassword() == null) {
@@ -68,12 +70,14 @@ public class InputHelper {
         if (input.getRoles() == null) {
             input.setRoles(new ArrayList<>());
         }
+
+        initInputRoles(input.getRoles());
     }
 
     /**
      * Initializes the properties of a Post object, setting them to default values if they are null.
      *
-     * @param input The Post object to initialize
+     * @param input The Post object to initialize.
      */
     public void initInputPost(Post input) {
 
@@ -96,7 +100,7 @@ public class InputHelper {
         }
 
         if (input.getDate() == null) {
-            input.setDate(LocalDateTime.now());
+            input.setDate(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         }
 
         if (input.getLikes() == null) {
@@ -111,7 +115,7 @@ public class InputHelper {
     /**
      * Initializes the properties of a PostComment object, setting them to default values if they are null.
      *
-     * @param input The PostComment object to initialize
+     * @param input The PostComment object to initialize.
      */
     public void initInputPostComment(PostComment input) {
 
@@ -138,29 +142,37 @@ public class InputHelper {
         if (input.getDate() == null) {
             input.setDate(LocalDateTime.now());
         }
+
+        if (input.getLikes() == null) {
+            input.setLikes(new HashSet<>());
+        }
     }
 
     /**
      * Initializes the properties of a Role object, setting them to default values if they are null.
      *
-     * @param input The Role object to initialize
+     * @param input The list of Role objects to initialize.
      */
-    public void initInputRoles(Role input) {
+    public void initInputRoles(List<Role> input) {
 
-        if (input.getId() == null) {
-            input.setId(0L);
-        }
+        for (Role role : input) {
 
-        if (input.getName() == null) {
-            input.setName("");
+            if (role.getId() == null) {
+                role.setId(2L);
+            }
+
+            if (role.getName() == null) {
+                role.setName(Constants.ROLE_USER);
+            }
+
         }
     }
 
     /**
      * Patches a Post object with values from another Post object, ignoring null values.
      *
-     * @param postToUpdate  The Post object to update
-     * @param input         The Post object containing values to patch
+     * @param postToUpdate The Post object to update.
+     * @param input        The Post object containing values to patch.
      */
     public void patchPost(Post postToUpdate, Post input) {
 
@@ -174,16 +186,13 @@ public class InputHelper {
     }
 
     /**
-     * Transforms a string in the format "dd.MM.yyyy" to a LocalDateTime object.
+     * Transforms a string in the format "yyyy-MM-dd'T'HH:mm" to a LocalDateTime object.
      *
-     * @param dateString The string representation of a date in "dd.MM.yyyy" format
-     * @return A LocalDateTime object representing the input date
+     * @param dateTimeString The string representation of a date and time in "yyyy-MM-dd'T'HH:mm" format.
+     * @return A LocalDateTime object representing the input date and time.
      */
-    public LocalDateTime transformStringToDateTime(String dateString) {
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        LocalDate localDate = LocalDate.parse(dateString, formatter);
-
-        return localDate.atStartOfDay();
+    public LocalDateTime transformStringToDateTime(String dateTimeString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        return LocalDateTime.parse(dateTimeString, formatter);
     }
 }

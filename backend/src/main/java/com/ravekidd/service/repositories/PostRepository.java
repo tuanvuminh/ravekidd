@@ -12,8 +12,7 @@ import java.util.List;
  */
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    Post findPostById(long id);
     List<Post> findById(long id);
-    List<Post> findByUserId(long id);
-    List<Post> findByDate(LocalDateTime date);
+    List<Post> findByUserIdIn(List<Long> userIds);
+    List<Post> findByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

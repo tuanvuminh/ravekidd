@@ -1,7 +1,8 @@
 package com.ravekidd.service.services;
 
+import com.ravekidd.exception.ServerException;
 import com.ravekidd.model.User;
-import com.ravekidd.model.auth.AuthResponse;
+import com.ravekidd.model.auth.AuthenticationResponse;
 import com.ravekidd.security.token.JWTProvider;
 import com.ravekidd.service.helpers.ActionHelper;
 import com.ravekidd.service.helpers.InputHelper;
@@ -15,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.ravekidd.consts.Constants.*;
@@ -56,7 +58,7 @@ public class UserService implements IUserService {
      * @inheritDoc
      */
     @Override
-    public List<User> getUsers(String query, String parameter, Authentication authentication) {
+    public List<User> getUsers(String query, String parameter, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a getUsers request.");
         actionHelper.authenticate(authentication);
@@ -68,48 +70,59 @@ public class UserService implements IUserService {
         List<User> users;
 
         switch (query) {
+
             case QUERY_USER_ID -> {
-                LOG.debug("Finding user by id {}...", parameter);
-                users = userRepository.findUserById(Long.parseLong(parameter));
+                String[] ids = parameter.split(", ");
+                LOG.debug("Finding users by ids: {}...", Arrays.toString(ids));
+                users = actionHelper.getUsersByIds(ids, userRepository);
+                return users;
             }
             case QUERY_USER_USERNAME -> {
-                LOG.debug("Finding user by username {}...", parameter);
-                users = userRepository.findUserByUsername(parameter);
+                String[] usernames = parameter.split(", ");
+                LOG.debug("Finding users by usernames: {}...", Arrays.toString(usernames));
+                users = actionHelper.getUsersByUsernames(usernames, userRepository);
+                return users;
             }
             default -> {
                 LOG.debug("Retrieving all users...");
                 users = userRepository.findAll();
+                return users;
             }
         }
-        LOG.debug("Users retrieved successfully: {}", users);
-        return users;
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public User deleteUser(Long id, Authentication authentication) {
+    public User deleteUser(Long id, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a deleteUser request.");
         actionHelper.authenticate(authentication);
 
-        User user = actionHelper.findUserById(id, userRepository);
-        user.getRoles().clear();
-        userRepository.delete(user);
+        try {
+            User user = actionHelper.findUserById(id, userRepository);
+            user.getRoles().clear();
+            userRepository.delete(user);
 
-        LOG.debug("User `{}` has been deleted.", user.getUsername());
-        return user;
+            LOG.debug("User `{}` has been deleted.", user.getUsername());
+            return user;
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
+        }
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public AuthResponse changeUsername(String newUsername, Authentication authentication) {
+    public AuthenticationResponse changeUsername(String newUsername, Authentication authentication) throws ServerException {
 
-        LOG.debug("Received a changeUsername request.");
+        LOG.debug("Received an changeUsername request.");
         actionHelper.authenticate(authentication);
+        AuthenticationResponse response = new AuthenticationResponse();
 
         try {
             User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
@@ -117,14 +130,17 @@ public class UserService implements IUserService {
             userRepository.save(user);
 
             String newToken = jwtProvider.generateToken(
-                    new UsernamePasswordAuthenticationToken(newUsername, null));
-
+                    new UsernamePasswordAuthenticationToken(newUsername, null)
+            );
             LOG.debug("User `{}` has changed their username to `{}`.", authentication.getName(), newUsername);
-            return new AuthResponse(SUCCESSFUL_USERNAME_CHANGE.getMessage(), newToken);
 
-        } catch (Exception e) {
-            LOG.error("Failed to change username for user: {}", authentication.getName(), e);
-            throw new RuntimeException("Failed to change username.");
+            response.setMessage(SUCCESSFUL_USERNAME_CHANGE.get());
+            response.setAccessToken(newToken);
+            return response;
+
+        } catch (ServerException exception) {
+            LOG.debug("Failed to change username for user: {} ,", authentication.getName(), exception);
+            throw exception;
         }
     }
 
@@ -132,15 +148,21 @@ public class UserService implements IUserService {
      * @inheritDoc
      */
     @Override
-    public User changeImage(String newImage, Authentication authentication) {
+    public User changeImage(String newImage, Authentication authentication) throws ServerException {
 
         LOG.debug("Received a changeImage request.");
         actionHelper.authenticate(authentication);
 
-        User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
-        user.setImage(newImage);
+        try {
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+            user.setImage(newImage);
 
-        LOG.debug("Image was changed.");
-        return userRepository.save(user);
+            LOG.debug("Image was changed.");
+            return userRepository.save(user);
+
+        } catch (ServerException exception) {
+            LOG.debug(exception.getLocalizedMessage());
+            throw exception;
+        }
     }
 }
