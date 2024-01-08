@@ -3,6 +3,10 @@ package com.ravekidd.consts;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Enumeration of messages used throughout the application.
+ * Messages are stored in a ResourceBundle for localization purposes.
+ */
 public enum Messages {
 
     // Successful messages
