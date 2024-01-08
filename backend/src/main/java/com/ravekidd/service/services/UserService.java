@@ -118,7 +118,8 @@ public class UserService implements IUserService {
      * @inheritDoc
      */
     @Override
-    public AuthenticationResponse changeUsername(String newUsername, Authentication authentication) throws ServerException {
+    public AuthenticationResponse changeUsername(String newUsername, Authentication authentication)
+            throws ServerException {
 
         LOG.debug("Received an changeUsername request.");
         actionHelper.authenticate(authentication);

@@ -91,8 +91,8 @@ public class ActionHelper {
         List<Post> posts = postRepository.findAllById(postIds);
 
         if (posts == null || posts.isEmpty()) {
-            LOG.debug(UNSUCCESSFUL_FIND_POSTS_BY_IDS.get(), postIds);
-            throw new ServerException("No posts found for the provided IDs: " + Arrays.toString(ids));
+            LOG.debug("No posts found for the provided IDs: {}", postIds);
+            throw new ServerException(UNSUCCESSFUL_FIND_POSTS_BY_IDS.get() + Arrays.toString(ids));
         }
         return posts;
     }
@@ -111,8 +111,8 @@ public class ActionHelper {
         List<Post> posts = postRepository.findByUserIdIn(userIds);
 
         if (posts == null || posts.isEmpty()) {
-            LOG.debug(UNSUCCESSFUL_FIND_POSTS_BY_USER_IDS.get(), userIds);
-            throw new ServerException("No posts found for the provided user IDs: " + Arrays.toString(ids));
+            LOG.debug("No posts found for the provided user IDs: {}", userIds);
+            throw new ServerException(UNSUCCESSFUL_FIND_POSTS_BY_USER_IDS.get() + " " + Arrays.toString(ids));
         }
         return posts;
     }
@@ -126,13 +126,15 @@ public class ActionHelper {
      * @return The list of found posts.
      * @throws EntityNotFoundException if no posts are found within the specified date range.
      */
-    public List<Post> getPostsByDates(LocalDateTime dateFrom, LocalDateTime dateTo, PostRepository postRepository) throws ServerException {
+    public List<Post> getPostsByDates(LocalDateTime dateFrom, LocalDateTime dateTo, PostRepository postRepository)
+            throws ServerException {
 
         List<Post> posts = postRepository.findByDateBetween(dateFrom, dateTo);
 
         if (posts == null || posts.isEmpty()) {
-            LOG.debug(UNSUCCESSFUL_FIND_POSTS_BETWEEN_DATES.get().formatted(dateFrom.toString(), dateTo.toString()));
-            throw new ServerException(UNSUCCESSFUL_FIND_POSTS_BETWEEN_DATES.get().formatted(dateFrom.toString(), dateTo.toString()));
+            LOG.debug("Posts between dates %s and %s were not found.".formatted(dateFrom.toString(), dateTo.toString()));
+            throw new ServerException(UNSUCCESSFUL_FIND_POSTS_BETWEEN_DATES.get().formatted(
+                    dateFrom.toString(), dateTo.toString()));
         }
         return posts;
     }
@@ -151,8 +153,8 @@ public class ActionHelper {
         List<User> users = userRepository.findAllById(userIds);
 
         if (users == null || users.isEmpty()) {
-            LOG.debug(UNSUCCESSFUL_FIND_USERS_BY_IDS.get(), userIds);
-            throw new ServerException("No users found for the provided IDs: " + Arrays.toString(ids));
+            LOG.debug("No users found for the provided IDs: {}", userIds);
+            throw new ServerException(UNSUCCESSFUL_FIND_USERS_BY_IDS.get() + " " + Arrays.toString(ids));
         }
         return users;
     }
@@ -170,8 +172,8 @@ public class ActionHelper {
         List<User> users = userRepository.findByUsernameIn(Arrays.asList(usernames));
 
         if (users == null || users.isEmpty()) {
-            LOG.debug(UNSUCCESSFUL_FIND_USERS_BY_USERNAMES.get(), Arrays.toString(usernames));
-            throw new ServerException("No users found for the provided usernames: " + Arrays.toString(usernames));
+            LOG.debug("No users found for the provided usernames: {}", Arrays.toString(usernames));
+            throw new ServerException(UNSUCCESSFUL_FIND_USERS_BY_USERNAMES.get() + " " + Arrays.toString(usernames));
         }
         return users;
     }

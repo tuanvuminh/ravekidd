@@ -84,8 +84,8 @@ public class UserController {
      * @return AuthResponse indicating the success of the operation.
      */
     @MutationMapping
-    public AuthenticationResponse changeUsername(@Argument @NotBlank(message = "Username cannot be blank.") String newUsername,
-                                                 Authentication authentication) throws ServerException {
+    public AuthenticationResponse changeUsername(@Argument @NotBlank(message = "Username cannot be blank.")
+                                                 String newUsername, Authentication authentication) throws ServerException {
 
         return service.changeUsername(newUsername, authentication);
     }

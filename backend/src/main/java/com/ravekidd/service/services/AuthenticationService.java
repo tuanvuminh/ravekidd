@@ -91,9 +91,9 @@ public class AuthenticationService implements IAuthenticationService {
         user.setPassword(passwordEncoder.encode(request.password()));
 
         if (request.username().equals("ravekidd-admin")) {
-            user.setRoles(Collections.singletonList(roleRepository.findByName(Constants.ROLE_ADMIN).get()));
+            user.setRoles(Collections.singletonList(roleRepository.findByName(Constants.ROLE_ADMIN)));
         } else {
-            user.setRoles(Collections.singletonList(roleRepository.findByName(Constants.ROLE_USER).get()));
+            user.setRoles(Collections.singletonList(roleRepository.findByName(Constants.ROLE_USER)));
         }
         inputHelper.initInputUser(user);
         userRepository.save(user);
