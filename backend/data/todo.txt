@@ -8,9 +8,7 @@ TODO Bulk queries------------------------DONE
 TODO LOG/Exception messages--------------DONE
 TODO Https-------------------------------DONE
 TODO Async conf and hikari pool
-TODO Decrypt/Encrypt password
 TODO Sorting on frontend
-TODO enhance Spring framework
 
 v2
 TODO Design Patterns
@@ -20,3 +18,4 @@ TODO Functional programming
 TODO API Gateway
 TODO JUnit
 TODO Sorting on frontend
+TODO enhance Spring framework/Token

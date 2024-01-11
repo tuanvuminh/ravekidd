@@ -8,6 +8,7 @@ type Mutation {
 
     changeImage(newImage: String): User
     changeUsername(newUsername: String): AuthenticationResponse
+    changePassword(newPassword: String): User
 
     createPost(post: PostInput): Post
     updatePost(post: PostInput): Post

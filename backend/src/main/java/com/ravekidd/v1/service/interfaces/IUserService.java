@@ -16,6 +16,7 @@ public interface IUserService {
      * Retrieves a list of users based on the provided query and parameter.
      *
      * @return A list of users matching the criteria.
+     * @throws ServerException If an error occurs during the operation.
      */
     List<User> getUsers(String query, String param, Authentication authentication) throws ServerException;
 
@@ -24,6 +25,7 @@ public interface IUserService {
      *
      * @param id ID of the user to be deleted.
      * @return The deleted UserEntity object.
+     * @throws ServerException If an error occurs during the operation.
      */
     User deleteUser(Long id, Authentication authentication) throws ServerException;
 
@@ -33,15 +35,27 @@ public interface IUserService {
      * @param newUsername    New username to set.
      * @param authentication Authentication of the user.
      * @return Authentication response containing a new bearer token.
+     * @throws ServerException If an error occurs during the operation.
      */
     AuthenticationResponse changeUsername(String newUsername, Authentication authentication) throws ServerException;
 
     /**
      * Change the image of a user.
      *
-     * @param newImage       New image URL.
+     * @param newImage       New image URL to set.
      * @param authentication Authentication of the user.
      * @return The updated user.
+     * @throws ServerException If an error occurs during the operation.
      */
     User changeImage(String newImage, Authentication authentication) throws ServerException;
+
+    /**
+     * Changes the password of the authenticated user.
+     *
+     * @param newPassword    New password to set.
+     * @param authentication Authentication of the user.
+     * @return The updated user.
+     * @throws ServerException If an error occurs during the operation.
+     */
+    User changePassword(String newPassword, Authentication authentication) throws ServerException;
 }

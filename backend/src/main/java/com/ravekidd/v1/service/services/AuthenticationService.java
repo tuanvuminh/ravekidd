@@ -122,7 +122,7 @@ public class AuthenticationService implements IAuthenticationService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtProvider.generateToken(authentication);
 
-            LOG.debug("User: {} successfully logged in.", request.username());
+            LOG.debug("User {} successfully logged in.", request.username());
             response.setMessage(SUCCESSFUL_LOGIN.get());
             response.setAccessToken(token);
 

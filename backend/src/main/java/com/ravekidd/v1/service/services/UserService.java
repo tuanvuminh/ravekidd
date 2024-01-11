@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,7 @@ public class UserService implements IUserService {
     private final JWTProvider jwtProvider;
     private final ActionHelper actionHelper;
     private final InputHelper inputHelper;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Constructor for UserService.
@@ -47,11 +49,13 @@ public class UserService implements IUserService {
     public UserService(UserRepository userRepository,
                        JWTProvider jwtProvider,
                        ActionHelper actionHelper,
-                       InputHelper inputHelper) {
+                       InputHelper inputHelper,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
         this.actionHelper = actionHelper;
         this.inputHelper = inputHelper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -163,6 +167,28 @@ public class UserService implements IUserService {
 
         } catch (ServerException exception) {
             LOG.debug(exception.getLocalizedMessage());
+            throw exception;
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public User changePassword(String newPassword, Authentication authentication) throws ServerException {
+
+        LOG.debug("Received a changePassword request.");
+        actionHelper.authenticate(authentication);
+
+        try {
+            User user = actionHelper.findUserByUsername(authentication.getName(), userRepository);
+            user.setPassword(passwordEncoder.encode(newPassword));
+
+            LOG.debug("User `{}` has successfully changed their password.", authentication.getName());
+            return userRepository.save(user);
+
+        } catch (ServerException exception) {
+            LOG.debug("Failed to change password for user: {} ,", authentication.getName(), exception);
             throw exception;
         }
     }
