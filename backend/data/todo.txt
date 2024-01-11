@@ -6,7 +6,7 @@ TODO Filters (Date)----------------------DONE
 TODO Exceptions--------------------------DONE
 TODO Bulk queries------------------------DONE
 TODO LOG/Exception messages--------------DONE
-TODO Https
+TODO Https-------------------------------DONE
 TODO Async conf and hikari pool
 TODO Decrypt/Encrypt password
 TODO Sorting on frontend
