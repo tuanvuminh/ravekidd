@@ -8,10 +8,9 @@ TODO Bulk queries------------------------DONE
 TODO LOG/Exception messages--------------DONE
 TODO Https-------------------------------DONE
 TODO Async conf and hikari pool
-TODO Sorting on frontend
+TODO Authentication context/cookies
 
 v2
-TODO Authentication context/cookies
 TODO Design Patterns
 TODO Generics
 TODO Nested classes
