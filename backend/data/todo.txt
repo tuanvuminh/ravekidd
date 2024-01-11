@@ -11,7 +11,7 @@ TODO Async conf and hikari pool
 TODO Sorting on frontend
 
 v2
-TODO Authentication context
+TODO Authentication context/cookies
 TODO Design Patterns
 TODO Generics
 TODO Nested classes
