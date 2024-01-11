@@ -11,11 +11,11 @@ TODO Async conf and hikari pool
 TODO Sorting on frontend
 
 v2
+TODO Authentication context
 TODO Design Patterns
 TODO Generics
 TODO Nested classes
 TODO Functional programming
 TODO API Gateway
 TODO JUnit
-TODO Sorting on frontend
 TODO enhance Spring framework/Token
