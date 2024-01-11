@@ -11,15 +11,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Global exception handler for handling validation-related exceptions in a RESTful API.
+ * Global exception handler for handling validation-related exceptions in a REST API.
  * This class provides methods to handle instances of MethodArgumentNotValidException
  * and other general exceptions. It returns appropriate HTTP status codes and error responses.
- *
- * The {@code handleValidationException} method specifically handles validation errors and
- * generates a response with HTTP status 401 (Unauthorized) and a list of error messages.
- *
- * The {@code handleException} method handles other general exceptions and returns an HTTP
- * status 500 (Internal Server Error) with a general error message.
  */
 @RestControllerAdvice
 public class ValidationExceptionHandler {
