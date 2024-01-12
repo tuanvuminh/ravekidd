@@ -15,9 +15,9 @@ public interface ICommentServiceV2 {
 
     ResponseEntity<RESTResponse> updateComment() throws ServerException;
 
-    ResponseEntity<RESTResponse> deleteComment() throws ServerException;
-
     ResponseEntity<RESTResponse> likeComment() throws ServerException;
 
     ResponseEntity<RESTResponse> unlikeComment() throws ServerException;
+
+    ResponseEntity<RESTResponse> deleteComment() throws ServerException;
 }

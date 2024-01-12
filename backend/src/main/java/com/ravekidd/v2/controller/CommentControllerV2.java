@@ -42,11 +42,6 @@ public class CommentControllerV2 {
         return service.updateComment();
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<RESTResponse> deleteComment() throws ServerException {
-        return service.deleteComment();
-    }
-
     @PostMapping("/like/{id}")
     ResponseEntity<RESTResponse> likeComment() throws ServerException {
         return service.likeComment();
@@ -55,5 +50,10 @@ public class CommentControllerV2 {
     @DeleteMapping("/like{id}")
     ResponseEntity<RESTResponse> unlikeComment() throws ServerException {
         return service.unlikeComment();
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<RESTResponse> deleteComment() throws ServerException {
+        return service.deleteComment();
     }
 }
