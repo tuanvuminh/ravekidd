@@ -28,7 +28,7 @@ public enum Messages {
     UNSUCCESSFUL_FIND_USERS("No users found."),
     UNSUCCESSFUL_AUTHENTICATION("User was not authenticated."),
 
-    // Posts  No posts found for the provided user IDs:
+    // Posts
     UNSUCCESSFUL_FIND_POST_BY_ID("Post with ID %d was not found."),
     UNSUCCESSFUL_FIND_POSTS_BY_IDS("No posts found for the provided IDs: "),
     UNSUCCESSFUL_FIND_POSTS_BY_USER_IDS("No posts found for the provided user IDs: "),

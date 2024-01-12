@@ -8,7 +8,6 @@ TODO Bulk queries------------------------DONE
 TODO LOG/Exception messages--------------DONE
 TODO Https-------------------------------DONE
 TODO Async conf and hikari pool
-TODO Authentication context/cookies
 
 v2
 TODO Design Patterns
@@ -17,4 +16,4 @@ TODO Nested classes
 TODO Functional programming
 TODO API Gateway
 TODO JUnit
-TODO enhance Spring framework/Token
+TODO enhance Spring security etc.
