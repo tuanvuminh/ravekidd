@@ -10,6 +10,9 @@ TODO Https-------------------------------DONE
 TODO Async conf and hikari pool
 
 v2
+TODO Events
+TODO mp3
+TODO AI
 TODO Design Patterns
 TODO Generics
 TODO Nested classes
