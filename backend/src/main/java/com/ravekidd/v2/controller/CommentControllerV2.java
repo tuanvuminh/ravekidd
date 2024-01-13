@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/comments")
+@RequestMapping("v2/comments")
 public class CommentControllerV2 {
 
     private final ICommentServiceV2 service;
