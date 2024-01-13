@@ -1,4 +1,4 @@
 package com.ravekidd.v2.model.rest;
 
-public class RESTResponse {
+public class RESTResponse<T extends RESTDTO> {
 }

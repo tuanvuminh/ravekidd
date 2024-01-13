@@ -1,4 +1,6 @@
 package com.ravekidd.v2.model.dto;
 
-public class UserDTO {
+import com.ravekidd.v2.model.rest.RESTDTO;
+
+public class UserDTO extends RESTDTO {
 }
