@@ -48,16 +48,6 @@ public class PostControllerV2 {
         return service.patchPost();
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<RESTResponse> deletePost() throws ServerException {
-        return service.deletePost();
-    }
-
-    @DeleteMapping
-    ResponseEntity<RESTResponse> deletePosts() throws ServerException {
-        return service.deletePosts();
-    }
-
     @PostMapping("/like/{id}")
     ResponseEntity<RESTResponse> likePost() throws ServerException {
         return service.likePost();
@@ -66,5 +56,14 @@ public class PostControllerV2 {
     @PostMapping("/like/{id}")
     ResponseEntity<RESTResponse> unlikePost() throws ServerException {
         return service.unlikePost();
+    }
+    @DeleteMapping("/{id}")
+    ResponseEntity<RESTResponse> deletePost() throws ServerException {
+        return service.deletePost();
+    }
+
+    @DeleteMapping
+    ResponseEntity<RESTResponse> deletePosts() throws ServerException {
+        return service.deletePosts();
     }
 }

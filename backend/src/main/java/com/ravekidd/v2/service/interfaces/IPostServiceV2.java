@@ -18,13 +18,11 @@ public interface IPostServiceV2 {
 
     ResponseEntity<RESTResponse> patchPost() throws ServerException;
 
-    ResponseEntity<RESTResponse> deletePost() throws ServerException;
-
-    ResponseEntity<RESTResponse> deletePosts() throws ServerException;
-
     ResponseEntity<RESTResponse> likePost() throws ServerException;
 
     ResponseEntity<RESTResponse> unlikePost() throws ServerException;
 
-    ResponseEntity<RESTResponse> getComments() throws ServerException;
+    ResponseEntity<RESTResponse> deletePost() throws ServerException;
+
+    ResponseEntity<RESTResponse> deletePosts() throws ServerException;
 }

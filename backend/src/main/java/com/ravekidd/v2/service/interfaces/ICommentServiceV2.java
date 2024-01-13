@@ -5,6 +5,7 @@ import com.ravekidd.v2.model.rest.RESTResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface ICommentServiceV2 {
+
     ResponseEntity<RESTResponse> getComments() throws ServerException;
 
     ResponseEntity<RESTResponse> getCommentById() throws ServerException;
