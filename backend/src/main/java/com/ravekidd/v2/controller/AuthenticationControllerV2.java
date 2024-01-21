@@ -1,6 +1,6 @@
 package com.ravekidd.v2.controller;
 
-import com.ravekidd.v1.exception.ServerException;
+import com.ravekidd.v2.exception.RESTException;
 import com.ravekidd.v2.model.rest.RESTResponse;
 import com.ravekidd.v2.service.interfaces.IAuthenticationServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +21,17 @@ public class AuthenticationControllerV2 {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RESTResponse> register() throws ServerException {
+    public ResponseEntity<RESTResponse> register() throws RESTException {
         return service.register();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<RESTResponse> login() throws ServerException {
+    public ResponseEntity<RESTResponse> login() throws RESTException {
         return service.login();
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<RESTResponse> logout() throws ServerException {
+    public ResponseEntity<RESTResponse> logout() throws RESTException {
         return service.logout();
     }
 }

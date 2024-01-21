@@ -1,6 +1,6 @@
 package com.ravekidd.v2.controller;
 
-import com.ravekidd.v1.exception.ServerException;
+import com.ravekidd.v2.exception.RESTException;
 import com.ravekidd.v2.model.rest.RESTResponse;
 import com.ravekidd.v2.service.interfaces.ICommentServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,42 +18,42 @@ public class CommentControllerV2 {
     }
 
     @GetMapping
-    ResponseEntity<RESTResponse> getComments() throws ServerException {
+    ResponseEntity<RESTResponse> getComments() throws RESTException {
         return service.getComments();
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<RESTResponse> getCommentById() throws ServerException {
+    ResponseEntity<RESTResponse> getCommentById() throws RESTException {
         return service.getCommentById();
     }
 
     @GetMapping("/{username}")
-    ResponseEntity<RESTResponse> getCommentByUser() throws ServerException {
+    ResponseEntity<RESTResponse> getCommentByUser() throws RESTException {
         return service.getCommentByUser();
     }
 
     @PostMapping
-    ResponseEntity<RESTResponse> addComment() throws ServerException {
+    ResponseEntity<RESTResponse> addComment() throws RESTException {
         return service.addComment();
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<RESTResponse> updateComment() throws ServerException {
+    ResponseEntity<RESTResponse> updateComment() throws RESTException {
         return service.updateComment();
     }
 
     @PostMapping("/like/{id}")
-    ResponseEntity<RESTResponse> likeComment() throws ServerException {
+    ResponseEntity<RESTResponse> likeComment() throws RESTException {
         return service.likeComment();
     }
 
     @DeleteMapping("/like{id}")
-    ResponseEntity<RESTResponse> unlikeComment() throws ServerException {
+    ResponseEntity<RESTResponse> unlikeComment() throws RESTException {
         return service.unlikeComment();
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<RESTResponse> deleteComment() throws ServerException {
+    ResponseEntity<RESTResponse> deleteComment() throws RESTException {
         return service.deleteComment();
     }
 }

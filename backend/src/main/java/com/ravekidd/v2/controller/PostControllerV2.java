@@ -1,6 +1,6 @@
 package com.ravekidd.v2.controller;
 
-import com.ravekidd.v1.exception.ServerException;
+import com.ravekidd.v2.exception.RESTException;
 import com.ravekidd.v2.model.rest.RESTResponse;
 import com.ravekidd.v2.service.interfaces.IPostServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,51 +19,51 @@ public class PostControllerV2 {
     }
 
     @GetMapping
-    ResponseEntity<RESTResponse> getPosts() throws ServerException {
+    ResponseEntity<RESTResponse> getPosts() throws RESTException {
         return service.getPosts();
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<RESTResponse> getPostById() throws ServerException {
+    ResponseEntity<RESTResponse> getPostById() throws RESTException {
         return service.getPostById();
     }
 
     @GetMapping("/username")
-    ResponseEntity<RESTResponse> getPostByUser() throws ServerException {
+    ResponseEntity<RESTResponse> getPostByUser() throws RESTException {
         return service.getPostByUser();
     }
 
     @PostMapping
-    ResponseEntity<RESTResponse> createPost() throws ServerException {
+    ResponseEntity<RESTResponse> createPost() throws RESTException {
         return service.createPost();
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<RESTResponse> updatePost() throws ServerException {
+    ResponseEntity<RESTResponse> updatePost() throws RESTException {
         return service.updatePost();
     }
 
     @PatchMapping("/{id}")
-    ResponseEntity<RESTResponse> patchPost() throws ServerException {
+    ResponseEntity<RESTResponse> patchPost() throws RESTException {
         return service.patchPost();
     }
 
     @PostMapping("/like/{id}")
-    ResponseEntity<RESTResponse> likePost() throws ServerException {
+    ResponseEntity<RESTResponse> likePost() throws RESTException {
         return service.likePost();
     }
 
     @PostMapping("/like/{id}")
-    ResponseEntity<RESTResponse> unlikePost() throws ServerException {
+    ResponseEntity<RESTResponse> unlikePost() throws RESTException {
         return service.unlikePost();
     }
     @DeleteMapping("/{id}")
-    ResponseEntity<RESTResponse> deletePost() throws ServerException {
+    ResponseEntity<RESTResponse> deletePost() throws RESTException {
         return service.deletePost();
     }
 
     @DeleteMapping
-    ResponseEntity<RESTResponse> deletePosts() throws ServerException {
+    ResponseEntity<RESTResponse> deletePosts() throws RESTException {
         return service.deletePosts();
     }
 }

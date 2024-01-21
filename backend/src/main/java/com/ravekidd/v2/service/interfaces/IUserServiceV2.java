@@ -1,22 +1,22 @@
 package com.ravekidd.v2.service.interfaces;
 
-import com.ravekidd.v1.exception.ServerException;
+import com.ravekidd.v2.exception.RESTException;
 import com.ravekidd.v2.model.rest.RESTResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface IUserServiceV2 {
 
-    ResponseEntity<RESTResponse> getUsers() throws ServerException;
+    ResponseEntity<RESTResponse> getUsers() throws RESTException;
 
-    ResponseEntity<RESTResponse> getUserById() throws ServerException;
+    ResponseEntity<RESTResponse> getUserById() throws RESTException;
 
-    ResponseEntity<RESTResponse> getUserByUsername() throws ServerException;
+    ResponseEntity<RESTResponse> getUserByUsername() throws RESTException;
 
-    ResponseEntity<RESTResponse> updateUser() throws ServerException;
+    ResponseEntity<RESTResponse> updateUser() throws RESTException;
 
-    ResponseEntity<RESTResponse> patchUser() throws ServerException;
+    ResponseEntity<RESTResponse> patchUser() throws RESTException;
 
-    ResponseEntity<RESTResponse> deleteUser() throws ServerException;
+    ResponseEntity<RESTResponse> deleteUser() throws RESTException;
 
-    ResponseEntity<RESTResponse> deleteUsers() throws ServerException;
+    ResponseEntity<RESTResponse> deleteUsers() throws RESTException;
 }
