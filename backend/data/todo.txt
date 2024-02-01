@@ -22,4 +22,6 @@ TODO Nested classes
 TODO Functional programming
 TODO API Gateway
 TODO enhance Spring security etc.
+TODO oauth2
 TODO JUnit
+TODO Raw JDBC
