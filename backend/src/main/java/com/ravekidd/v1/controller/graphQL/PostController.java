@@ -46,6 +46,7 @@ public class PostController {
      * @param parameter      Additional parameter for filtering.
      * @param authentication Authentication object representing the current user.
      * @return List of posts matching the criteria.
+     * @throws ServerException If an error occurs during the operation.
      */
     @QueryMapping
     public List<Post> getPosts(@Pattern(regexp = "^(id|user|date)$", message = "Allowed queries: [id, user, date]")
@@ -62,6 +63,7 @@ public class PostController {
      * @param post           The new incoming instance of the Post object.
      * @param authentication Authentication object representing the current user.
      * @return The newly created post.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public Post createPost(@Valid @Argument Post post, Authentication authentication) throws ServerException {
@@ -74,6 +76,7 @@ public class PostController {
      * @param post           The updated instance of the Post object.
      * @param authentication Authentication object representing the current user.
      * @return The post with the updated content.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public Post updatePost(@Valid @Argument Post post, Authentication authentication) throws ServerException {
@@ -86,6 +89,7 @@ public class PostController {
      * @param postId         The ID of the post to be deleted.
      * @param authentication Authentication object representing the current user.
      * @return The deleted post.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public Post deletePost(@Min(value = 1, message = "ID must be at least 1.")
@@ -101,6 +105,7 @@ public class PostController {
      * @param postId         The ID of the post to be liked.
      * @param authentication Authentication object representing the current user.
      * @return The post with the updated like status.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public Post likePost(@Min(value = 1, message = "ID must be at least 1.")
@@ -116,6 +121,7 @@ public class PostController {
      * @param postId         The ID of the post to be unliked.
      * @param authentication Authentication object representing the current user.
      * @return The post with the updated like status.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public Post unlikePost(@Min(value = 1, message = "ID must be at least 1.")
@@ -131,6 +137,7 @@ public class PostController {
      * @param comment        The new incoming instance of the PostComment object.
      * @param authentication Authentication object representing the current user.
      * @return The post with the added comment.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public Post addComment(@Min(value = 1, message = "ID must be at least 1.")
@@ -146,6 +153,7 @@ public class PostController {
      * @param comment        The updated instance of the PostComment object.
      * @param authentication Authentication object representing the current user.
      * @return The post with the updated comment.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public Post updateComment(@Min(value = 1, message = "ID must be at least 1.")
@@ -162,6 +170,7 @@ public class PostController {
      * @param commentId      The ID of the comment to be deleted.
      * @param authentication Authentication object representing the current user.
      * @return The post with the deleted comment.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public Post deleteComment(@Min(value = 1, message = "ID must be at least 1.")
@@ -180,6 +189,7 @@ public class PostController {
      * @param commentId      The ID of the comment to be liked.
      * @param authentication Authentication object representing the current user.
      * @return The post with the updated comment like status.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public Post likeComment(@Min(value = 1, message = "ID must be at least 1.")
@@ -198,6 +208,7 @@ public class PostController {
      * @param commentId      The ID of the comment to be unliked.
      * @param authentication Authentication object representing the current user.
      * @return The post with the updated comment like status.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public Post unlikeComment(@Min(value = 1, message = "ID must be at least 1.")

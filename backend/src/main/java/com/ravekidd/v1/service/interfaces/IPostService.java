@@ -16,6 +16,7 @@ public interface IPostService {
      * Retrieves a list of posts based on the given query and parameter.
      *
      * @return List of posts matching the criteria.
+     * @throws ServerException If an error occurs during the operation.
      */
     List<Post> getPosts(String query, String parameter, Authentication authentication) throws ServerException;
 
@@ -25,6 +26,7 @@ public interface IPostService {
      * @param post           Content of the new post.
      * @param authentication Authentication of the user.
      * @return The created post.
+     * @throws ServerException If an error occurs during the operation.
      */
     Post createPost(Post post, Authentication authentication) throws ServerException;
 
@@ -34,6 +36,7 @@ public interface IPostService {
      * @param post           Updated content of the post.
      * @param authentication Authentication object representing the current user.
      * @return The post with the updated content.
+     * @throws ServerException If an error occurs during the operation.
      */
     Post updatePost(Post post, Authentication authentication) throws ServerException;
 
@@ -43,6 +46,7 @@ public interface IPostService {
      * @param postId         ID of the post to be deleted.
      * @param authentication Authentication of the user.
      * @return The deleted post.
+     * @throws ServerException If an error occurs during the operation.
      */
     Post deletePost(Long postId, Authentication authentication) throws ServerException;
 
@@ -52,6 +56,7 @@ public interface IPostService {
      * @param postId         ID of the post to be liked.
      * @param authentication Authentication of the user.
      * @return The liked post.
+     * @throws ServerException If an error occurs during the operation.
      */
     Post likePost(Long postId, Authentication authentication) throws ServerException;
 
@@ -61,6 +66,7 @@ public interface IPostService {
      * @param postId         ID of the post to unlike.
      * @param authentication Authentication of the user.
      * @return The unliked post.
+     * @throws ServerException If an error occurs during the operation.
      */
     Post unlikePost(Long postId, Authentication authentication) throws ServerException;
 
@@ -70,6 +76,7 @@ public interface IPostService {
      * @param comment        Content of the comment.
      * @param authentication Authentication of the user.
      * @return The post with added comment.
+     * @throws ServerException If an error occurs during the operation.
      */
     Post addComment(Long postId, PostComment comment, Authentication authentication) throws ServerException;
 
@@ -79,6 +86,7 @@ public interface IPostService {
      * @param comment        Updated content of the comment.
      * @param authentication Authentication of the user.
      * @return The post with the updated comment.
+     * @throws ServerException If an error occurs during the operation.
      */
     Post updateComment(Long postId, PostComment comment, Authentication authentication) throws ServerException;
 
@@ -88,6 +96,7 @@ public interface IPostService {
      * @param commentId      ID of the comment to be deleted.
      * @param authentication Authentication of the user.
      * @return The post with deleted comment.
+     * @throws ServerException If an error occurs during the operation.
      */
     Post deleteComment(Long postId, Long commentId, Authentication authentication) throws ServerException;
 
@@ -99,6 +108,7 @@ public interface IPostService {
      * @param commentId      ID of the comment to be liked.
      * @param authentication Authentication of the user.
      * @return The post with the liked comment.
+     * @throws ServerException If an error occurs during the operation.
      */
     Post likeComment(Long postId, Long commentId, Authentication authentication) throws ServerException;
 
@@ -109,6 +119,7 @@ public interface IPostService {
      * @param commentId      ID of the comment to be unliked.
      * @param authentication Authentication of the user.
      * @return The post with the unliked comment.
+     * @throws ServerException If an error occurs during the operation.
      */
     Post unlikeComment(Long postId, Long commentId, Authentication authentication) throws ServerException;
 }

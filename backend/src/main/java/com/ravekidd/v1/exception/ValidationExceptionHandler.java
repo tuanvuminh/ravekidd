@@ -1,5 +1,6 @@
 package com.ravekidd.v1.exception;
 import com.ravekidd.v1.model.error.ErrorResponse;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -30,7 +31,7 @@ public class ValidationExceptionHandler {
     public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
 
         List<String> errorMessages = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
 
         ErrorResponse response = new ErrorResponse("Unauthorized", 401, errorMessages);

@@ -4,10 +4,7 @@ import com.ravekidd.v1.exception.ServerException;
 import com.ravekidd.v1.model.User;
 import com.ravekidd.v1.model.auth.AuthenticationResponse;
 import com.ravekidd.v1.service.interfaces.IUserService;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -49,6 +46,7 @@ public class UserController {
      * @param parameter      Additional parameter for filtering.
      * @param authentication Authentication object representing the current user.
      * @return List of users matching the criteria.
+     * @throws ServerException If an error occurs during the operation.
      */
     @QueryMapping
     public List<User> getUsers(
@@ -66,6 +64,7 @@ public class UserController {
      * @param id             The ID of the user to delete.
      * @param authentication Authentication object representing the current user.
      * @return The deleted user.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     @Secured(ROLE_ADMIN)
@@ -82,10 +81,12 @@ public class UserController {
      * @param newUsername    The new username to set.
      * @param authentication Authentication object representing the current user.
      * @return AuthResponse indicating the success of the operation.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public AuthenticationResponse changeUsername(@Argument @NotBlank(message = "Username cannot be blank.")
-                                                 String newUsername, Authentication authentication) throws ServerException {
+                                                 String newUsername, Authentication authentication)
+            throws ServerException {
 
         return service.changeUsername(newUsername, authentication);
     }
@@ -96,11 +97,30 @@ public class UserController {
      * @param newImage       The new image URL to set.
      * @param authentication Authentication object representing the current user.
      * @return The user with the updated image.
+     * @throws ServerException If an error occurs during the operation.
      */
     @MutationMapping
     public User changeImage(@Pattern(regexp = ".*\\.(jpg|jpeg|png)$", message = "Allowed formats: [jpg, jpeg, png]")
                             @Argument String newImage, Authentication authentication) throws ServerException {
 
         return service.changeImage(newImage, authentication);
+    }
+
+    /**
+     * GraphQL Mutation mapping. Changes the password of the authenticated user.
+     *
+     * @param newPassword    The new password to be set.
+     * @param authentication The authentication object representing the current user.
+     * @return The user with the updated password.
+     * @throws ServerException If an error occurs during the operation.
+     */
+    @MutationMapping
+    public User changePassword(@NotBlank(message = "Password cannot be blank.")
+                               @Size(min = 6, message = "Password must be at least 6 characters long.")
+                               @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$",
+                                       message = "Password must contain at least one letter and one digit.")
+                               @Argument String newPassword, Authentication authentication) throws ServerException {
+
+        return service.changePassword(newPassword, authentication);
     }
 }

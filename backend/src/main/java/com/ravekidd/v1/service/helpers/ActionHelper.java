@@ -5,7 +5,6 @@ import com.ravekidd.v1.model.Post;
 import com.ravekidd.v1.model.User;
 import com.ravekidd.v1.service.repositories.PostRepository;
 import com.ravekidd.v1.service.repositories.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
@@ -30,7 +29,7 @@ public class ActionHelper {
      * Authenticates the user based on the provided authentication object.
      *
      * @param authentication The authentication object.
-     * @throws SecurityException if the user is not authenticated.
+     * @throws ServerException if the user is not authenticated.
      */
     public void authenticate(Authentication authentication) throws ServerException {
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -44,7 +43,7 @@ public class ActionHelper {
      * @param username       The username of the user to find.
      * @param userRepository The repository for user entities.
      * @return The founded user.
-     * @throws EntityNotFoundException if the user is not found.
+     * @throws ServerException if the user is not found.
      */
     public User findUserByUsername(String username, UserRepository userRepository) throws ServerException {
         return userRepository.findByUsername(username)
@@ -57,7 +56,7 @@ public class ActionHelper {
      * @param id             The ID of the user to find.
      * @param userRepository The repository for user entities.
      * @return The founded user.
-     * @throws EntityNotFoundException if the user is not found.
+     * @throws ServerException if the user is not found.
      */
     public User findUserById(Long id, UserRepository userRepository) throws ServerException {
         return userRepository.findById(id)
@@ -70,7 +69,7 @@ public class ActionHelper {
      * @param postId         The ID of the post to retrieve.
      * @param postRepository The repository for post entities.
      * @return The found post.
-     * @throws EntityNotFoundException if the post is not found.
+     * @throws ServerException if the post is not found.
      */
     public Post findPost(Long postId, PostRepository postRepository) throws ServerException {
         return postRepository.findById(postId)
@@ -83,7 +82,7 @@ public class ActionHelper {
      * @param ids            The IDs of the posts to retrieve.
      * @param postRepository The repository for post entities.
      * @return The list of found posts.
-     * @throws EntityNotFoundException if no posts are found for the given ID.
+     * @throws ServerException if no posts are found for the given ID.
      */
     public List<Post> getPostsByIds(String[] ids, PostRepository postRepository) throws ServerException {
 
@@ -103,7 +102,7 @@ public class ActionHelper {
      * @param ids            The user IDs for which to retrieve posts.
      * @param postRepository The repository for post entities.
      * @return The list of found posts.
-     * @throws EntityNotFoundException if no posts are found for the given user ID.
+     * @throws ServerException if no posts are found for the given user ID.
      */
     public List<Post> getPostsByUserIds(String[] ids, PostRepository postRepository) throws ServerException {
 
@@ -124,7 +123,7 @@ public class ActionHelper {
      * @param dateTo         The end of the date range.
      * @param postRepository The repository for post entities.
      * @return The list of found posts.
-     * @throws EntityNotFoundException if no posts are found within the specified date range.
+     * @throws ServerException if no posts are found within the specified date range.
      */
     public List<Post> getPostsByDates(LocalDateTime dateFrom, LocalDateTime dateTo, PostRepository postRepository)
             throws ServerException {
@@ -145,7 +144,7 @@ public class ActionHelper {
      * @param ids            The IDs of the users to retrieve.
      * @param userRepository The repository for user entities.
      * @return The list of found users.
-     * @throws EntityNotFoundException if no users are found for the given ID.
+     * @throws ServerException if no users are found for the given ID.
      */
     public List<User> getUsersByIds(String[] ids, UserRepository userRepository) throws ServerException {
 
@@ -165,7 +164,7 @@ public class ActionHelper {
      * @param usernames      The usernames of the users to retrieve.
      * @param userRepository The repository for user entities.
      * @return The list of found users.
-     * @throws EntityNotFoundException if no users are found for the given username.
+     * @throws ServerException if no users are found for the given username.
      */
     public List<User> getUsersByUsernames(String[] usernames, UserRepository userRepository) throws ServerException {
 
